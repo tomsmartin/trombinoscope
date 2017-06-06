@@ -1,5 +1,6 @@
 <?php     
     include 'admin/database.php';
+    session_start();
 
     if(!empty($_POST)) 
     {
@@ -113,7 +114,16 @@
 				<div class="col-md-3 col-sm-3 col-xs-3">
 					<div class="main-menu-connexion">
 						<ul class="fa-ul">
-							<a href="admin/login.php"><li><i class="fa fa-lock" ></i> Connexion</li></a>		
+							<?php
+								if (!isset($_SESSION['login'])) 
+								{
+								  	echo '<a href="admin/login.php"><li><i class="fa fa-lock" ></i> Connexion</li></a>';
+								}
+								else if (isset($_SESSION['login'])) 
+								{
+									echo '<a href="admin/session_destroy.php"><li><i class="fa fa-unlock" ></i> Déconnexion</li></a>';
+								}   
+							?>		
 						</ul>
 					</div>						
 				</div>
