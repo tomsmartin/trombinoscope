@@ -37,7 +37,7 @@
 				<div class="col-md-3 col-sm-3 col-xs-3">
 					<div class="main-menu-connexion">
 						<ul class="fa-ul">
-							<a href="session_destroy.php"><li><i class="fa fa-lock" ></i> Déconnexion</li></a>		
+							<a href="session_destroy.php"><li><i class="fa fa-unlock" ></i> Déconnexion</li></a>		
 						</ul>
 					</div>						
 				</div>
