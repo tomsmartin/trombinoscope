@@ -1,6 +1,7 @@
 <?php     
     include 'admin/database.php';
     session_start();
+    $champInvalide = "";
 
     if(!empty($_POST)) 
     {
@@ -8,71 +9,14 @@
         $nomEmploye         = checkInput($_POST['nom_employe']);
         $prenomEmploye      = checkInput($_POST['prenom_employe']);
         $agenceEmploye      = checkInput($_POST['agence_employe']);
-        $posteEmploye       = checkInput($_POST['poste_employe']); 
+        $posteEmploye       = checkInput($_POST['poste_employe']);
+        $succes 			= true;
 
-        
-        if(!empty($nomEmploye) && !empty($prenomEmploye) && !empty($agenceEmploye) && !empty($posteEmploye)) 
-        {
-
-        }
-        elseif(!empty($prenomEmploye)) 
-        {
-            $prenomError = 'Ce champ ne peut pas être vide';
-            $isSuccess = false;
-        } 
-        if(empty($agenceEmploye)) 
-        {
-            $agenceError = 'Ce champ ne peut pas être vide';
-            $isSuccess = false;
-        } 
-        if(empty($posteEmploye)) 
-        {
-            $posteError = 'Ce champ ne peut pas être vide';
-            $isSuccess = false;
-        }
-        if(empty($image)) 
-        {
-            $imageError = 'Ce champ ne peut pas être vide';
-            $isSuccess = false;
-        }
-        else
-        {
-            $isUploadSuccess = true;
-            if($imageExtension != "jpg" && $imageExtension != "png" && $imageExtension != "jpeg" ) 
-            {
-                $imageError = "Les fichiers autorises sont: .jpg, .jpeg, .png";
-                $isUploadSuccess = false;
-            }
-            if(file_exists($imagePath)) 
-            {
-                $imageError = "Le fichier existe deja";
-                $isUploadSuccess = false;
-            }
-            if($_FILES["image"]["size"] > 1000000) 
-            {
-                $imageError = "Le fichier ne doit pas depasser les 1Mo";
-                $isUploadSuccess = false;
-            }
-            if($isUploadSuccess) 
-            {
-                if(!move_uploaded_file($_FILES["image"]["tmp_name"], $imagePath)) 
-                {
-                    $imageError = "Il y a eu une erreur lors de l'upload";
-                    $isUploadSuccess = false;
-                } 
-            } 
-        }
-        
-        if($isSuccess && $isUploadSuccess) 
-        {
-
-        	$db = Database::connect();
-            $statement = $db->prepare("INSERT INTO employe(nom_employe,prenom_employe,agence_employe,poste_employe,image_employe) values(?, ?, ?, ?, ?)");
-            $statement->execute(array($nomEmploye,$prenomEmploye,$agenceEmploye,$posteEmploye,$image));
-            Database::disconnect();
-            header("Location: insert.php");
-
-        }
+    }
+    if (empty($nomEmploye) && empty($prenomEmploye) && empty($agenceEmploye) && empty($posteEmploye)) 
+    {
+    	$champInvalide = 'Vous devez remplir au moins un champ';
+    	$succes = false;
     }
 
     function checkInput($data) 
@@ -146,7 +90,7 @@
 												$db = Database::connect();
 					                           	foreach ($db->query('SELECT * FROM agence') as $row) 
 					                           	{
-					                                echo '<option value="'. $row['id_agence'] .'">'. $row['nom_agence'] . '</option>';;
+					                                echo '<option value="'. $row['nom_agence'] .'">'. $row['nom_agence'] . '</option>';;
 					                           	}
 					                           	Database::disconnect();													
 											?>
@@ -160,7 +104,7 @@
 												$db = Database::connect();
 					                           	foreach ($db->query('SELECT * FROM poste') as $row) 
 					                           	{
-					                                echo '<option value="'. $row['id_poste'] .'">'. $row['nom_poste'] . '</option>';;
+					                                echo '<option value="'. $row['nom_poste'] .'">'. $row['nom_poste'] . '</option>';;
 					                           	}
 					                           	Database::disconnect();													
 											?>
@@ -174,6 +118,8 @@
 										<label id="prenom">Prénom :</label>	
 										<input class="form-nom" type="text" name="prenom_employe" id="prenom-employe" placeholder="prénom de l'employé" style="margin-left: 3px;">
 									</div>
+									<p class="alert alert-warning" style="width:380px">Vous devez remplir au moins un champ du formulaire</p>
+									<br>
 									<button type="submit" class="btn" style="margin-left: 65px;">Rechercher</button>
 								</fieldset>						
 							</form>						
@@ -182,6 +128,330 @@
 				</div>
 			</div>
 		</section>
+		<?php 
+		if(!empty($_POST) && $succes) 
+	    {
+	    	?>
+			<section id="formulaire">
+				<div class="container">
+					<div class="red-bar">
+						<div class="administration-trombi">
+							<div class="row">
+								<h1><strong>Liste des employés</strong></h1>
+				                <table class="table table-striped table-bordered">
+				                  <thead>
+				                    <tr>
+				                      <th>Nom</th>
+				                      <th>Prénom</th>
+				                      <th>Agence</th>
+				                      <th>Poste</th>
+				                      <th>Image</th>
+				                    </tr>
+				                  </thead>
+				                  <tbody>			                  
+				                      <?php
+
+				                      	/* TRAITEMENT SI TOUS LES CHAMPS SONT SAISIS*/
+
+					                    if ($succes == true && !empty($nomEmploye) && !empty($prenomEmploye) && !empty($agenceEmploye) && !empty($posteEmploye)) 
+										{
+											$db = Database::connect();
+											$statement = $db->query('SELECT * FROM employe WHERE nom_employe = "'.$nomEmploye.'" AND prenom_employe = "'.$prenomEmploye.'" AND agence_employe = "'.$agenceEmploye.'" AND poste_employe = "'.$posteEmploye.'"');
+											while($employe = $statement-> fetch()) 
+											{
+											echo '<tr>';
+											echo '<td>'. $employe['nom_employe'] . '</td>';
+											echo '<td>'. $employe['prenom_employe'] . '</td>';
+											echo '<td>'. $employe['agence_employe'] . '</td>';			                         
+											echo '<td>'. $employe['poste_employe'] . '</td>';
+											echo '<td><img src="images/'.$employe['image_employe'].'" alt=""></td>';
+											echo '</tr>';
+											}
+											Database::disconnect();
+										}
+										
+				                      	/* TRAITEMENT SI LES CHAMPS NOM, PRENOM ET AGENCE SONT SAISIS*/
+
+										if ($succes == true && !empty($nomEmploye) && !empty($prenomEmploye) && !empty($agenceEmploye) && empty($posteEmploye)) 
+										{
+											$db = Database::connect();
+											$statement = $db->query('SELECT * FROM employe WHERE nom_employe = "'.$nomEmploye.'" AND prenom_employe = "'.$prenomEmploye.'" AND agence_employe = "'.$agenceEmploye.'"');
+											while($employe = $statement-> fetch()) 
+											{
+											echo '<tr>';
+											echo '<td>'. $employe['nom_employe'] . '</td>';
+											echo '<td>'. $employe['prenom_employe'] . '</td>';
+											echo '<td>'. $employe['agence_employe'] . '</td>';			                         
+											echo '<td>'. $employe['poste_employe'] . '</td>';
+											echo '<td><img src="images/'.$employe['image_employe'].'" alt=""></td>';
+											echo '</tr>';
+											}	
+											Database::disconnect();
+										}
+
+				                      	/* TRAITEMENT SI LES CHAMPS NOM, PRENOM ET POSTE SONT SAISIS*/									
+
+										if ($succes == true && !empty($nomEmploye) && !empty($prenomEmploye) && empty($agenceEmploye) && !empty($posteEmploye)) 
+										{
+											$db = Database::connect();
+											$statement = $db->query('SELECT * FROM employe WHERE nom_employe = "'.$nomEmploye.'" AND prenom_employe = "'.$prenomEmploye.'" AND poste_employe = "'.$posteEmploye.'"');
+											while($employe = $statement-> fetch()) 
+											{
+											echo '<tr>';
+											echo '<td>'. $employe['nom_employe'] . '</td>';
+											echo '<td>'. $employe['prenom_employe'] . '</td>';
+											echo '<td>'. $employe['agence_employe'] . '</td>';			                         
+											echo '<td>'. $employe['poste_employe'] . '</td>';
+											echo '<td><img src="images/'.$employe['image_employe'].'" alt=""></td>';
+											echo '</tr>';
+											}
+											Database::disconnect();
+										}
+
+				                      	/* TRAITEMENT SI LES CHAMPS NOM, AGENCE ET POSTE SONT SAISIS*/
+
+										if ($succes == true && !empty($nomEmploye) && empty($prenomEmploye) && !empty($agenceEmploye) && !empty($posteEmploye)) 
+										{
+											$db = Database::connect();
+											$statement = $db->query('SELECT * FROM employe WHERE nom_employe = "'.$nomEmploye.'" AND agence_employe = "'.$agenceEmploye.'" AND poste_employe = "'.$posteEmploye.'"');
+											while($employe = $statement-> fetch()) 
+											{
+											echo '<tr>';
+											echo '<td>'. $employe['nom_employe'] . '</td>';
+											echo '<td>'. $employe['prenom_employe'] . '</td>';
+											echo '<td>'. $employe['agence_employe'] . '</td>';			                         
+											echo '<td>'. $employe['poste_employe'] . '</td>';
+											echo '<td><img src="images/'.$employe['image_employe'].'" alt=""></td>';
+											echo '</tr>';
+											}
+											Database::disconnect();
+										}
+
+				                      	/* TRAITEMENT SI LES CHAMPS PRENOM, AGENCE ET POSTE SONT SAISIS*/	
+
+										if ($succes == true && empty($nomEmploye) && !empty($prenomEmploye) && !empty($agenceEmploye) && !empty($posteEmploye)) 
+										{
+											$db = Database::connect();
+											$statement = $db->query('SELECT * FROM employe WHERE prenom_employe = "'.$prenomEmploye.'" AND agence_employe = "'.$agenceEmploye.'" AND poste_employe = "'.$posteEmploye.'"');
+											while($employe = $statement-> fetch()) 
+											{
+											echo '<tr>';
+											echo '<td>'. $employe['nom_employe'] . '</td>';
+											echo '<td>'. $employe['prenom_employe'] . '</td>';
+											echo '<td>'. $employe['agence_employe'] . '</td>';			                         
+											echo '<td>'. $employe['poste_employe'] . '</td>';
+											echo '<td><img src="images/'.$employe['image_employe'].'" alt=""></td>';
+											echo '</tr>';
+											}
+											Database::disconnect();
+										}
+										
+				                      	/* TRAITEMENT SI LES CHAMPS NOM ET PRENOM SONT SAISIS*/
+
+										if ($succes == true && !empty($nomEmploye) && !empty($prenomEmploye) && empty($agenceEmploye) && empty($posteEmploye)) 
+										{
+											$db = Database::connect();
+											$statement = $db->query('SELECT * FROM employe WHERE nom_employe = "'.$nomEmploye.'" AND prenom_employe = "'.$prenomEmploye.'"');
+											while($employe = $statement-> fetch()) 
+											{
+											echo '<tr>';
+											echo '<td>'. $employe['nom_employe'] . '</td>';
+											echo '<td>'. $employe['prenom_employe'] . '</td>';
+											echo '<td>'. $employe['agence_employe'] . '</td>';			                         
+											echo '<td>'. $employe['poste_employe'] . '</td>';
+											echo '<td><img src="images/'.$employe['image_employe'].'" alt=""></td>';
+											echo '</tr>';
+											}
+											Database::disconnect();
+										}
+										
+				                      	/* TRAITEMENT SI LES CHAMPS NOM ET AGENCE SONT SAISIS*/
+
+										if ($succes == true && !empty($nomEmploye) && empty($prenomEmploye) && !empty($agenceEmploye) && empty($posteEmploye)) 
+					                    {
+					                      	$db = Database::connect();
+					                      	$statement = $db->query('SELECT * FROM employe WHERE nom_employe = "'.$nomEmploye.'"  AND agence_employe = "'.$agenceEmploye.'"');
+					                        while($employe = $statement-> fetch()) 
+					                        {
+					                            echo '<tr>';
+					                            echo '<td>'. $employe['nom_employe'] . '</td>';
+					                            echo '<td>'. $employe['prenom_employe'] . '</td>';
+					                            echo '<td>'. $employe['agence_employe'] . '</td>';			                         
+					                            echo '<td>'. $employe['poste_employe'] . '</td>';
+					                            echo '<td><img src="images/'.$employe['image_employe'].'" alt=""></td>';
+					                            echo '</tr>';
+
+					                            Database::disconnect();
+					                        }
+					                    }
+					                        
+				                      	/* TRAITEMENT SI LES CHAMPS NOM ET POSTE SONT SAISIS*/
+
+										if ($succes == true && !empty($nomEmploye) && empty($prenomEmploye) && empty($agenceEmploye) && !empty($posteEmploye)) 
+										{
+											$db = Database::connect();
+											$statement = $db->query('SELECT * FROM employe WHERE nom_employe = "'.$nomEmploye.'" AND poste_employe = "'.$posteEmploye.'"');
+											while($employe = $statement-> fetch()) 
+											{
+											echo '<tr>';
+											echo '<td>'. $employe['nom_employe'] . '</td>';
+											echo '<td>'. $employe['prenom_employe'] . '</td>';
+											echo '<td>'. $employe['agence_employe'] . '</td>';			                         
+											echo '<td>'. $employe['poste_employe'] . '</td>';
+											echo '<td><img src="images/'.$employe['image_employe'].'" alt=""></td>';
+											echo '</tr>';
+											}
+											Database::disconnect();	
+										}
+
+				                      	/* TRAITEMENT SI LES CHAMPS PRENOM ET AGENCE SONT SAISIS*/	
+
+										if ($succes == true && empty($nomEmploye) && !empty($prenomEmploye) && !empty($agenceEmploye) && empty($posteEmploye)) 
+										{
+											$db = Database::connect();
+											$statement = $db->query('SELECT * FROM employe WHERE prenom_employe = "'.$prenomEmploye.'" AND agence_employe = "'.$agenceEmploye.'"');
+											while($employe = $statement-> fetch()) 
+											{
+											echo '<tr>';
+											echo '<td>'. $employe['nom_employe'] . '</td>';
+											echo '<td>'. $employe['prenom_employe'] . '</td>';
+											echo '<td>'. $employe['agence_employe'] . '</td>';			                         
+											echo '<td>'. $employe['poste_employe'] . '</td>';
+											echo '<td><img src="images/'.$employe['image_employe'].'" alt=""></td>';
+											echo '</tr>';
+											}
+											Database::disconnect();
+										}
+
+				                      	/* TRAITEMENT SI LES CHAMPS PRENOM ET POSTE SONT SAISIS*/										
+
+										if ($succes == true && empty($nomEmploye) && !empty($prenomEmploye) && empty($agenceEmploye) && !empty($posteEmploye)) 
+										{
+											$db = Database::connect();
+											$statement = $db->query('SELECT * FROM employe WHERE prenom_employe = "'.$prenomEmploye.'" AND poste_employe = "'.$posteEmploye.'"');
+											while($employe = $statement-> fetch()) 
+											{
+											echo '<tr>';
+											echo '<td>'. $employe['nom_employe'] . '</td>';
+											echo '<td>'. $employe['prenom_employe'] . '</td>';
+											echo '<td>'. $employe['agence_employe'] . '</td>';			                         
+											echo '<td>'. $employe['poste_employe'] . '</td>';
+											echo '<td><img src="images/'.$employe['image_employe'].'" alt=""></td>';
+											echo '</tr>';
+											}
+											Database::disconnect();
+										}
+										
+
+				                      	/* TRAITEMENT SI LES CHAMPS AGENCE ET POSTE SONT SAISIS*/
+
+										if ($succes == true && empty($nomEmploye) && empty($prenomEmploye) && !empty($agenceEmploye) && !empty($posteEmploye)) 
+										{
+											$db = Database::connect();
+											$statement = $db->query('SELECT * FROM employe WHERE agence_employe = "'.$agenceEmploye.'" AND poste_employe = "'.$posteEmploye.'"');
+											while($employe = $statement-> fetch()) 
+											{
+											echo '<tr>';
+											echo '<td>'. $employe['nom_employe'] . '</td>';
+											echo '<td>'. $employe['prenom_employe'] . '</td>';
+											echo '<td>'. $employe['agence_employe'] . '</td>';			                         
+											echo '<td>'. $employe['poste_employe'] . '</td>';
+											echo '<td><img src="images/'.$employe['image_employe'].'" alt=""></td>';
+											echo '</tr>';
+											}
+											Database::disconnect();	
+										}
+											
+
+					                    /* TRAITEMENT SI IL Y A JUSTE LE NOM DE SELECTIONNER */
+
+					                    if ($succes == true && !empty($nomEmploye) && empty($prenomEmploye) && empty($agenceEmploye) && empty($posteEmploye)) 
+										{
+											$db = Database::connect();
+											$statement = $db->query('SELECT * FROM employe WHERE nom_employe = "'.$nomEmploye.'"');
+											while($employe = $statement-> fetch()) 
+											{
+											echo '<tr>';
+											echo '<td>'. $employe['nom_employe'] . '</td>';
+											echo '<td>'. $employe['prenom_employe'] . '</td>';
+											echo '<td>'. $employe['agence_employe'] . '</td>';			                         
+											echo '<td>'. $employe['poste_employe'] . '</td>';
+											echo '<td><img src="images/'.$employe['image_employe'].'" alt=""></td>';
+											echo '</tr>';
+											}
+											Database::disconnect();
+										}
+										
+
+										/* TRAITEMENT SI IL Y A JUSTE LE PRENOM DE SELECTIONNER */
+
+										if ($succes == true && empty($nomEmploye) && !empty($prenomEmploye) && empty($agenceEmploye) && empty($posteEmploye)) 
+										{
+											$db = Database::connect();
+											$statement = $db->query('SELECT * FROM employe WHERE prenom_employe = "'.$prenomEmploye.'"');
+											while($employe = $statement-> fetch()) 
+											{
+											echo '<tr>';
+											echo '<td>'. $employe['nom_employe'] . '</td>';
+											echo '<td>'. $employe['prenom_employe'] . '</td>';
+											echo '<td>'. $employe['agence_employe'] . '</td>';			                         
+											echo '<td>'. $employe['poste_employe'] . '</td>';
+											echo '<td><img src="images/'.$employe['image_employe'].'" alt=""></td>';
+											echo '</tr>';
+											}
+											Database::disconnect();
+										}
+										
+
+										/* TRAITEMENT SI IL Y A JUSTE L'AGENCE DE SELECTIONNER */
+
+										if ($succes == true && empty($nomEmploye) && empty($prenomEmploye) && !empty($agenceEmploye) && empty($posteEmploye)) 
+										{
+											$db = Database::connect();
+											$statement = $db->query('SELECT * FROM employe WHERE agence_employe = "'.$agenceEmploye.'"');
+											while($employe = $statement-> fetch()) 
+											{
+											echo '<tr>';
+											echo '<td>'. $employe['nom_employe'] . '</td>';
+											echo '<td>'. $employe['prenom_employe'] . '</td>';
+											echo '<td>'. $employe['agence_employe'] . '</td>';			                         
+											echo '<td>'. $employe['poste_employe'] . '</td>';
+											echo '<td><img src="images/'.$employe['image_employe'].'" alt=""></td>';
+											echo '</tr>';
+											}
+											Database::disconnect();
+										}
+										
+										/* TRAITEMENT SI IL Y A JUSTE LE POSTE DE SELECTIONNER */
+
+										if ($succes == true && empty($nomEmploye) && empty($prenomEmploye) && empty($agenceEmploye) && !empty($posteEmploye)) 
+										{
+											$db = Database::connect();
+											$statement = $db->query('SELECT * FROM employe WHERE poste_employe = "'.$posteEmploye.'"');
+											while($employe = $statement-> fetch()) 
+											{
+											echo '<tr>';
+											echo '<td>'. $employe['nom_employe'] . '</td>';
+											echo '<td>'. $employe['prenom_employe'] . '</td>';
+											echo '<td>'. $employe['agence_employe'] . '</td>';			                         
+											echo '<td>'. $employe['poste_employe'] . '</td>';
+											echo '<td><img src="images/'.$employe['image_employe'].'" alt=""></td>';
+											echo '</tr>';
+											}
+											Database::disconnect();
+										}
+					                    ?>
+				                  </tbody>
+				                </table>
+							</div>
+						</div>				
+					</div>
+				</div>
+			</section>
+	        <?php
+	    }
+		?>
+		
 		<footer>
 			<div class="container">
 				<div class="red-bar">
