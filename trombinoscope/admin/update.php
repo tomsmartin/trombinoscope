@@ -219,7 +219,7 @@
 					                           	foreach ($db->query('SELECT * FROM poste') as $row) 
 					                           	{
 					                           		if($row['nom_poste'] == $posteEmploye)
-				                                        echo '<option selected="selected" value="'. $row['nom_pote'] .'">'. $row['nom_poste'] . '</option>';
+				                                        echo '<option selected="selected" value="'. $row['nom_poste'] .'">'. $row['nom_poste'] . '</option>';
 				                                    else
 					                                echo '<option value="'. $row['nom_poste'] .'">'. $row['nom_poste'] . '</option>';;
 					                           	}
