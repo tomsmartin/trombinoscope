@@ -75,8 +75,8 @@
 								<legend><span style="color: #6DA542; font-style: normal; padding-left: 0.5em;"> <em>Trombinoscope - Supprimer un employé</em></span></legend>
 								<form class="form" action="delete.php" role="form" method="post">
 				                    <input type="hidden" name="id" value="<?php echo $id;?>"/>
-				                    <p class="alert alert-warning">Êtes-vous sur de vouloir supprimer l'employé ?</p>
-				                    <div class="form-actions">
+				                    <p class="alert alert-warning" style="width:380px">Êtes-vous sur de vouloir supprimer l'employé ?</p>
+				                    <div class="form-actions" style="margin-left: 140px">
 				                      <button type="submit" class="btn btn-warning">Oui</button>
 				                      <a class="btn btn-default" href="index.php">Non</a>			                      
 			                    	</div>		                    			                    
