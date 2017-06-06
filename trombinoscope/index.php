@@ -164,7 +164,7 @@
 											echo '<td>'. $employe['prenom_employe'] . '</td>';
 											echo '<td>'. $employe['agence_employe'] . '</td>';			                         
 											echo '<td>'. $employe['poste_employe'] . '</td>';
-											echo '<td><img src="images/'.$employe['image_employe'].'" alt=""></td>';
+											echo '<td><img src="images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
 											echo '</tr>';
 											}
 											Database::disconnect();
@@ -183,7 +183,7 @@
 											echo '<td>'. $employe['prenom_employe'] . '</td>';
 											echo '<td>'. $employe['agence_employe'] . '</td>';			                         
 											echo '<td>'. $employe['poste_employe'] . '</td>';
-											echo '<td><img src="images/'.$employe['image_employe'].'" alt=""></td>';
+											echo '<td><img src="images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
 											echo '</tr>';
 											}	
 											Database::disconnect();
@@ -202,7 +202,7 @@
 											echo '<td>'. $employe['prenom_employe'] . '</td>';
 											echo '<td>'. $employe['agence_employe'] . '</td>';			                         
 											echo '<td>'. $employe['poste_employe'] . '</td>';
-											echo '<td><img src="images/'.$employe['image_employe'].'" alt=""></td>';
+											echo '<td><img src="images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
 											echo '</tr>';
 											}
 											Database::disconnect();
@@ -221,7 +221,7 @@
 											echo '<td>'. $employe['prenom_employe'] . '</td>';
 											echo '<td>'. $employe['agence_employe'] . '</td>';			                         
 											echo '<td>'. $employe['poste_employe'] . '</td>';
-											echo '<td><img src="images/'.$employe['image_employe'].'" alt=""></td>';
+											echo '<td><img src="images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
 											echo '</tr>';
 											}
 											Database::disconnect();
@@ -240,7 +240,7 @@
 											echo '<td>'. $employe['prenom_employe'] . '</td>';
 											echo '<td>'. $employe['agence_employe'] . '</td>';			                         
 											echo '<td>'. $employe['poste_employe'] . '</td>';
-											echo '<td><img src="images/'.$employe['image_employe'].'" alt=""></td>';
+											echo '<td><img src="images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
 											echo '</tr>';
 											}
 											Database::disconnect();
@@ -259,7 +259,7 @@
 											echo '<td>'. $employe['prenom_employe'] . '</td>';
 											echo '<td>'. $employe['agence_employe'] . '</td>';			                         
 											echo '<td>'. $employe['poste_employe'] . '</td>';
-											echo '<td><img src="images/'.$employe['image_employe'].'" alt=""></td>';
+											echo '<td><img src="images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
 											echo '</tr>';
 											}
 											Database::disconnect();
@@ -278,7 +278,7 @@
 					                            echo '<td>'. $employe['prenom_employe'] . '</td>';
 					                            echo '<td>'. $employe['agence_employe'] . '</td>';			                         
 					                            echo '<td>'. $employe['poste_employe'] . '</td>';
-					                            echo '<td><img src="images/'.$employe['image_employe'].'" alt=""></td>';
+					                            echo '<td><img src="images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
 					                            echo '</tr>';
 
 					                            Database::disconnect();
@@ -298,7 +298,7 @@
 											echo '<td>'. $employe['prenom_employe'] . '</td>';
 											echo '<td>'. $employe['agence_employe'] . '</td>';			                         
 											echo '<td>'. $employe['poste_employe'] . '</td>';
-											echo '<td><img src="images/'.$employe['image_employe'].'" alt=""></td>';
+											echo '<td><img src="images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
 											echo '</tr>';
 											}
 											Database::disconnect();	
@@ -317,7 +317,7 @@
 											echo '<td>'. $employe['prenom_employe'] . '</td>';
 											echo '<td>'. $employe['agence_employe'] . '</td>';			                         
 											echo '<td>'. $employe['poste_employe'] . '</td>';
-											echo '<td><img src="images/'.$employe['image_employe'].'" alt=""></td>';
+											echo '<td><img src="images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
 											echo '</tr>';
 											}
 											Database::disconnect();
@@ -336,7 +336,7 @@
 											echo '<td>'. $employe['prenom_employe'] . '</td>';
 											echo '<td>'. $employe['agence_employe'] . '</td>';			                         
 											echo '<td>'. $employe['poste_employe'] . '</td>';
-											echo '<td><img src="images/'.$employe['image_employe'].'" alt=""></td>';
+											echo '<td><img src="images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
 											echo '</tr>';
 											}
 											Database::disconnect();
@@ -356,7 +356,7 @@
 											echo '<td>'. $employe['prenom_employe'] . '</td>';
 											echo '<td>'. $employe['agence_employe'] . '</td>';			                         
 											echo '<td>'. $employe['poste_employe'] . '</td>';
-											echo '<td><img src="images/'.$employe['image_employe'].'" alt=""></td>';
+											echo '<td><img src="images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
 											echo '</tr>';
 											}
 											Database::disconnect();	
@@ -376,7 +376,7 @@
 											echo '<td>'. $employe['prenom_employe'] . '</td>';
 											echo '<td>'. $employe['agence_employe'] . '</td>';			                         
 											echo '<td>'. $employe['poste_employe'] . '</td>';
-											echo '<td><img src="images/'.$employe['image_employe'].'" alt=""></td>';
+											echo '<td><img src="images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
 											echo '</tr>';
 											}
 											Database::disconnect();
@@ -396,7 +396,7 @@
 											echo '<td>'. $employe['prenom_employe'] . '</td>';
 											echo '<td>'. $employe['agence_employe'] . '</td>';			                         
 											echo '<td>'. $employe['poste_employe'] . '</td>';
-											echo '<td><img src="images/'.$employe['image_employe'].'" alt=""></td>';
+											echo '<td><img src="images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
 											echo '</tr>';
 											}
 											Database::disconnect();
@@ -416,7 +416,7 @@
 											echo '<td>'. $employe['prenom_employe'] . '</td>';
 											echo '<td>'. $employe['agence_employe'] . '</td>';			                         
 											echo '<td>'. $employe['poste_employe'] . '</td>';
-											echo '<td><img src="images/'.$employe['image_employe'].'" alt=""></td>';
+											echo '<td><img src="images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
 											echo '</tr>';
 											}
 											Database::disconnect();
@@ -435,7 +435,7 @@
 											echo '<td>'. $employe['prenom_employe'] . '</td>';
 											echo '<td>'. $employe['agence_employe'] . '</td>';			                         
 											echo '<td>'. $employe['poste_employe'] . '</td>';
-											echo '<td><img src="images/'.$employe['image_employe'].'" alt=""></td>';
+											echo '<td><img src="images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
 											echo '</tr>';
 											}
 											Database::disconnect();
