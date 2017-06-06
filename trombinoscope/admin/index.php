@@ -72,7 +72,7 @@
 			                            echo '<td>'. $employe['prenom_employe'] . '</td>';
 			                            echo '<td>'. $employe['agence_employe'] . '</td>';			                         
 			                            echo '<td>'. $employe['poste_employe'] . '</td>';
-			                            echo '<td><img src="../images/'.$employe['image_employe'].'>" alt=""></td>';
+			                            echo '<td><img src="../images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
 			                            echo '<td width=300>';			                         
 			                            echo ' ';
 			                            echo '<a class="btn " href="update.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-pencil"></span> Modifier</a>';
