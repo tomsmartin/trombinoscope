@@ -16,7 +16,7 @@
 		if ($statement ->fetch())
 		{
 			$_SESSION['login'] = $login;
-			header("location: insert.php");
+			header("location: index.php");
 		}
 		else
 		{
