@@ -55,7 +55,7 @@
 				<div class="col-md-6 col-sm-6 col-xs-6">
 					<div class="header-trombi">
 						<div class="main-menu">
-							<a href="../index.php"><img src="../images/logo.png"></a>
+							<a href="../../index.php"><img src="../images/logo.png"></a>
 						</div>
 					</div>			
 				</div>
@@ -91,6 +91,7 @@
 									</div>
 									<span class="help-inline" style="color: red"><?php echo $error;?></span>
 									<button type="submit" class="btn" style="margin-left: 120px;" name="connexion" value="connexion">Se connecter</button>
+									<a href="index.php" class="btn" ><span class="glyphicon glyphicon-arrow-left"></span> Retour</a>
 								</fieldset>						
 							</form>						
 						</div>
