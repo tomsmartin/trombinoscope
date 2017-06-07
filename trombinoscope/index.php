@@ -48,7 +48,7 @@
 				<div class="col-md-6 col-sm-6 col-xs-6">
 					<div class="header-trombi">
 						<div class="main-menu">
-							<a href="index.php"><img src="images/logo.png"></a>
+							<a href="../index.php"><img src="images/logo.png"></a>
 						</div>
 					</div>			
 				</div>
@@ -81,10 +81,10 @@
 							<div class="col-md-3"></div>
 							<form role="form" class="form-vertcial col-md-9" method="post" action="index.php">
 								<fieldset>
-									<legend><span style="color: #6DA542; font-style: normal; padding-left: 0.5em;"> <em>Trombinoscope - Recherche</em></span></legend>
+									<legend><span style="color: #6DA542; font-style: normal; padding-left: 0.5em;"> <em>Trombinoscope - Recherche</em></span><a href="../index.php" class="btn" style="margin-left: 65px;"><span class="glyphicon glyphicon-arrow-left"></span> Retour</a></legend>
 									<div class="form-group" for="agence">
 										<label id="agence">Agence :</label>	
-										<select class="selector" style="margin-left: 3px;" name="agence_employe">
+										<select class="selector" style="margin-left: 4px;" name="agence_employe">
 											<option value=""></option>
 											<?php
 												$db = Database::connect();
@@ -97,8 +97,8 @@
 										</select>
 									</div>
 									<div class="form-group" for="poste">
-										<label id="poste">Poste :</label>	
-										<select class="selector" style="margin-left: 16px;" name="poste_employe">
+										<label id="poste">Service :</label>	
+										<select class="selector" style="margin-left: 6px;" name="poste_employe">
 											<option value=""></option>
 											<?php
 												$db = Database::connect();
@@ -112,20 +112,21 @@
 									</div>
 									<div class="form-group" for="nom">
 										<label id="nom">Nom :</label>	
-										<input class="form-nom" type="text" name="nom_employe" id="nom_employe" placeholder="nom de l'employé" style="margin-left: 25px;">
+										<input class="form-nom" type="text" name="nom_employe" id="nom_employe" placeholder="nom de l'employé" style="margin-left: 24px;">
 									</div>
 									<div class="form-group" for="prenom">
 										<label id="prenom">Prénom :</label>	
 										<input class="form-nom" type="text" name="prenom_employe" id="prenom-employe" placeholder="prénom de l'employé" style="margin-left: 3px;">
 									</div>
-									<p class="alert alert-warning" style="width:380px">Vous devez remplir au moins un champ du formulaire</p>
+										<p class="alert alert-warning" style="width:380px">Vous devez remplir au moins un champ du formulaire</p>
 									<br>
 
 									<?php
 										if (!isset($_SESSION['login'])) 
 										{
 										  	?>
-										  	<button type="submit" class="btn" style="margin-left: 65px;">Rechercher</button>
+										  	<button type="submit" class="btn" style="margin-left: 70px;">Rechercher</button>
+										  	
 										  	<?php
 										}
 										if (isset($_SESSION['login'])) 
@@ -134,6 +135,7 @@
 											<button type="submit" class="btn" >Rechercher</button>
 											<a href="admin/index.php" class="btn">Administration</a>
 											<a href="admin/insert.php" class="btn">Ajouter un employé</a>
+
 											<?php
 										}
 									?>
@@ -157,10 +159,10 @@
 				                <table class="table table-striped table-bordered">
 				                  <thead>
 				                    <tr>
+				                      <th>Agence</th>
+				                      <th>Service</th>
 				                      <th>Nom</th>
 				                      <th>Prénom</th>
-				                      <th>Agence</th>
-				                      <th>Poste</th>
 				                      <th>Image</th>
 				                    </tr>
 				                  </thead>
@@ -172,14 +174,14 @@
 					                    if ($succes == true && !empty($nomEmploye) && !empty($prenomEmploye) && !empty($agenceEmploye) && !empty($posteEmploye)) 
 										{
 											$db = Database::connect();
-											$statement = $db->query('SELECT * FROM employe WHERE nom_employe = "'.$nomEmploye.'" AND prenom_employe = "'.$prenomEmploye.'" AND agence_employe = "'.$agenceEmploye.'" AND poste_employe = "'.$posteEmploye.'"');
+											$statement = $db->query('SELECT * FROM employe WHERE nom_employe = "'.$nomEmploye.'" AND prenom_employe = "'.$prenomEmploye.'" AND agence_employe = "'.$agenceEmploye.'" AND poste_employe = "'.$posteEmploye.'" ORDER BY agence_employe ASC, poste_employe ASC ');
 											while($employe = $statement-> fetch()) 
 											{
 											echo '<tr>';
-											echo '<td>'. $employe['nom_employe'] . '</td>';
-											echo '<td>'. $employe['prenom_employe'] . '</td>';
-											echo '<td>'. $employe['agence_employe'] . '</td>';			                         
+											echo '<td>'. $employe['agence_employe'] . '</td>';
 											echo '<td>'. $employe['poste_employe'] . '</td>';
+											echo '<td>'. $employe['nom_employe'] . '</td>';			                         
+											echo '<td>'. $employe['prenom_employe'] . '</td>';
 											echo '<td><img src="images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
 											echo '</tr>';
 											}
@@ -191,14 +193,14 @@
 										if ($succes == true && !empty($nomEmploye) && !empty($prenomEmploye) && !empty($agenceEmploye) && empty($posteEmploye)) 
 										{
 											$db = Database::connect();
-											$statement = $db->query('SELECT * FROM employe WHERE nom_employe = "'.$nomEmploye.'" AND prenom_employe = "'.$prenomEmploye.'" AND agence_employe = "'.$agenceEmploye.'"');
+											$statement = $db->query('SELECT * FROM employe WHERE nom_employe = "'.$nomEmploye.'" AND prenom_employe = "'.$prenomEmploye.'" AND agence_employe = "'.$agenceEmploye.'" ORDER BY agence_employe ASC, poste_employe ASC');
 											while($employe = $statement-> fetch()) 
 											{
 											echo '<tr>';
-											echo '<td>'. $employe['nom_employe'] . '</td>';
-											echo '<td>'. $employe['prenom_employe'] . '</td>';
-											echo '<td>'. $employe['agence_employe'] . '</td>';			                         
+											echo '<td>'. $employe['agence_employe'] . '</td>';
 											echo '<td>'. $employe['poste_employe'] . '</td>';
+											echo '<td>'. $employe['nom_employe'] . '</td>';			                         
+											echo '<td>'. $employe['prenom_employe'] . '</td>';
 											echo '<td><img src="images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
 											echo '</tr>';
 											}	
@@ -210,14 +212,14 @@
 										if ($succes == true && !empty($nomEmploye) && !empty($prenomEmploye) && empty($agenceEmploye) && !empty($posteEmploye)) 
 										{
 											$db = Database::connect();
-											$statement = $db->query('SELECT * FROM employe WHERE nom_employe = "'.$nomEmploye.'" AND prenom_employe = "'.$prenomEmploye.'" AND poste_employe = "'.$posteEmploye.'"');
+											$statement = $db->query('SELECT * FROM employe WHERE nom_employe = "'.$nomEmploye.'" AND prenom_employe = "'.$prenomEmploye.'" AND poste_employe = "'.$posteEmploye.'" ORDER BY agence_employe ASC, poste_employe ASC');
 											while($employe = $statement-> fetch()) 
 											{
 											echo '<tr>';
-											echo '<td>'. $employe['nom_employe'] . '</td>';
-											echo '<td>'. $employe['prenom_employe'] . '</td>';
-											echo '<td>'. $employe['agence_employe'] . '</td>';			                         
+											echo '<td>'. $employe['agence_employe'] . '</td>';
 											echo '<td>'. $employe['poste_employe'] . '</td>';
+											echo '<td>'. $employe['nom_employe'] . '</td>';			                         
+											echo '<td>'. $employe['prenom_employe'] . '</td>';
 											echo '<td><img src="images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
 											echo '</tr>';
 											}
@@ -229,14 +231,14 @@
 										if ($succes == true && !empty($nomEmploye) && empty($prenomEmploye) && !empty($agenceEmploye) && !empty($posteEmploye)) 
 										{
 											$db = Database::connect();
-											$statement = $db->query('SELECT * FROM employe WHERE nom_employe = "'.$nomEmploye.'" AND agence_employe = "'.$agenceEmploye.'" AND poste_employe = "'.$posteEmploye.'"');
+											$statement = $db->query('SELECT * FROM employe WHERE nom_employe = "'.$nomEmploye.'" AND agence_employe = "'.$agenceEmploye.'" AND poste_employe = "'.$posteEmploye.'" ORDER BY agence_employe ASC, poste_employe ASC');
 											while($employe = $statement-> fetch()) 
 											{
 											echo '<tr>';
-											echo '<td>'. $employe['nom_employe'] . '</td>';
-											echo '<td>'. $employe['prenom_employe'] . '</td>';
-											echo '<td>'. $employe['agence_employe'] . '</td>';			                         
+											echo '<td>'. $employe['agence_employe'] . '</td>';
 											echo '<td>'. $employe['poste_employe'] . '</td>';
+											echo '<td>'. $employe['nom_employe'] . '</td>';			                         
+											echo '<td>'. $employe['prenom_employe'] . '</td>';
 											echo '<td><img src="images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
 											echo '</tr>';
 											}
@@ -248,14 +250,14 @@
 										if ($succes == true && empty($nomEmploye) && !empty($prenomEmploye) && !empty($agenceEmploye) && !empty($posteEmploye)) 
 										{
 											$db = Database::connect();
-											$statement = $db->query('SELECT * FROM employe WHERE prenom_employe = "'.$prenomEmploye.'" AND agence_employe = "'.$agenceEmploye.'" AND poste_employe = "'.$posteEmploye.'"');
+											$statement = $db->query('SELECT * FROM employe WHERE prenom_employe = "'.$prenomEmploye.'" AND agence_employe = "'.$agenceEmploye.'" AND poste_employe = "'.$posteEmploye.'" ORDER BY agence_employe ASC, poste_employe ASC');
 											while($employe = $statement-> fetch()) 
 											{
 											echo '<tr>';
-											echo '<td>'. $employe['nom_employe'] . '</td>';
-											echo '<td>'. $employe['prenom_employe'] . '</td>';
-											echo '<td>'. $employe['agence_employe'] . '</td>';			                         
+											echo '<td>'. $employe['agence_employe'] . '</td>';
 											echo '<td>'. $employe['poste_employe'] . '</td>';
+											echo '<td>'. $employe['nom_employe'] . '</td>';			                         
+											echo '<td>'. $employe['prenom_employe'] . '</td>';
 											echo '<td><img src="images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
 											echo '</tr>';
 											}
@@ -267,14 +269,14 @@
 										if ($succes == true && !empty($nomEmploye) && !empty($prenomEmploye) && empty($agenceEmploye) && empty($posteEmploye)) 
 										{
 											$db = Database::connect();
-											$statement = $db->query('SELECT * FROM employe WHERE nom_employe = "'.$nomEmploye.'" AND prenom_employe = "'.$prenomEmploye.'"');
+											$statement = $db->query('SELECT * FROM employe WHERE nom_employe = "'.$nomEmploye.'" AND prenom_employe = "'.$prenomEmploye.'" ORDER BY agence_employe ASC, poste_employe ASC');
 											while($employe = $statement-> fetch()) 
 											{
 											echo '<tr>';
-											echo '<td>'. $employe['nom_employe'] . '</td>';
-											echo '<td>'. $employe['prenom_employe'] . '</td>';
-											echo '<td>'. $employe['agence_employe'] . '</td>';			                         
+											echo '<td>'. $employe['agence_employe'] . '</td>';
 											echo '<td>'. $employe['poste_employe'] . '</td>';
+											echo '<td>'. $employe['nom_employe'] . '</td>';			                         
+											echo '<td>'. $employe['prenom_employe'] . '</td>';
 											echo '<td><img src="images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
 											echo '</tr>';
 											}
@@ -286,14 +288,14 @@
 										if ($succes == true && !empty($nomEmploye) && empty($prenomEmploye) && !empty($agenceEmploye) && empty($posteEmploye)) 
 					                    {
 					                      	$db = Database::connect();
-					                      	$statement = $db->query('SELECT * FROM employe WHERE nom_employe = "'.$nomEmploye.'"  AND agence_employe = "'.$agenceEmploye.'"');
+					                      	$statement = $db->query('SELECT * FROM employe WHERE nom_employe = "'.$nomEmploye.'"  AND agence_employe = "'.$agenceEmploye.'" ORDER BY agence_employe ASC, poste_employe ASC');
 					                        while($employe = $statement-> fetch()) 
 					                        {
 					                            echo '<tr>';
-					                            echo '<td>'. $employe['nom_employe'] . '</td>';
-					                            echo '<td>'. $employe['prenom_employe'] . '</td>';
-					                            echo '<td>'. $employe['agence_employe'] . '</td>';			                         
-					                            echo '<td>'. $employe['poste_employe'] . '</td>';
+					                            echo '<td>'. $employe['agence_employe'] . '</td>';
+												echo '<td>'. $employe['poste_employe'] . '</td>';
+												echo '<td>'. $employe['nom_employe'] . '</td>';			                         
+												echo '<td>'. $employe['prenom_employe'] . '</td>';
 					                            echo '<td><img src="images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
 					                            echo '</tr>';
 
@@ -306,14 +308,14 @@
 										if ($succes == true && !empty($nomEmploye) && empty($prenomEmploye) && empty($agenceEmploye) && !empty($posteEmploye)) 
 										{
 											$db = Database::connect();
-											$statement = $db->query('SELECT * FROM employe WHERE nom_employe = "'.$nomEmploye.'" AND poste_employe = "'.$posteEmploye.'"');
+											$statement = $db->query('SELECT * FROM employe WHERE nom_employe = "'.$nomEmploye.'" AND poste_employe = "'.$posteEmploye.'" ORDER BY agence_employe ASC, poste_employe ASC');
 											while($employe = $statement-> fetch()) 
 											{
 											echo '<tr>';
-											echo '<td>'. $employe['nom_employe'] . '</td>';
-											echo '<td>'. $employe['prenom_employe'] . '</td>';
-											echo '<td>'. $employe['agence_employe'] . '</td>';			                         
+											echo '<td>'. $employe['agence_employe'] . '</td>';
 											echo '<td>'. $employe['poste_employe'] . '</td>';
+											echo '<td>'. $employe['nom_employe'] . '</td>';			                         
+											echo '<td>'. $employe['prenom_employe'] . '</td>';
 											echo '<td><img src="images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
 											echo '</tr>';
 											}
@@ -325,14 +327,14 @@
 										if ($succes == true && empty($nomEmploye) && !empty($prenomEmploye) && !empty($agenceEmploye) && empty($posteEmploye)) 
 										{
 											$db = Database::connect();
-											$statement = $db->query('SELECT * FROM employe WHERE prenom_employe = "'.$prenomEmploye.'" AND agence_employe = "'.$agenceEmploye.'"');
+											$statement = $db->query('SELECT * FROM employe WHERE prenom_employe = "'.$prenomEmploye.'" AND agence_employe = "'.$agenceEmploye.'" ORDER BY agence_employe ASC, poste_employe ASC');
 											while($employe = $statement-> fetch()) 
 											{
 											echo '<tr>';
-											echo '<td>'. $employe['nom_employe'] . '</td>';
-											echo '<td>'. $employe['prenom_employe'] . '</td>';
-											echo '<td>'. $employe['agence_employe'] . '</td>';			                         
+											echo '<td>'. $employe['agence_employe'] . '</td>';
 											echo '<td>'. $employe['poste_employe'] . '</td>';
+											echo '<td>'. $employe['nom_employe'] . '</td>';			                         
+											echo '<td>'. $employe['prenom_employe'] . '</td>';
 											echo '<td><img src="images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
 											echo '</tr>';
 											}
@@ -344,14 +346,14 @@
 										if ($succes == true && empty($nomEmploye) && !empty($prenomEmploye) && empty($agenceEmploye) && !empty($posteEmploye)) 
 										{
 											$db = Database::connect();
-											$statement = $db->query('SELECT * FROM employe WHERE prenom_employe = "'.$prenomEmploye.'" AND poste_employe = "'.$posteEmploye.'"');
+											$statement = $db->query('SELECT * FROM employe WHERE prenom_employe = "'.$prenomEmploye.'" AND poste_employe = "'.$posteEmploye.'" ORDER BY agence_employe ASC, poste_employe ASC');
 											while($employe = $statement-> fetch()) 
 											{
 											echo '<tr>';
-											echo '<td>'. $employe['nom_employe'] . '</td>';
-											echo '<td>'. $employe['prenom_employe'] . '</td>';
-											echo '<td>'. $employe['agence_employe'] . '</td>';			                         
+											echo '<td>'. $employe['agence_employe'] . '</td>';
 											echo '<td>'. $employe['poste_employe'] . '</td>';
+											echo '<td>'. $employe['nom_employe'] . '</td>';			                         
+											echo '<td>'. $employe['prenom_employe'] . '</td>';
 											echo '<td><img src="images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
 											echo '</tr>';
 											}
@@ -364,14 +366,14 @@
 										if ($succes == true && empty($nomEmploye) && empty($prenomEmploye) && !empty($agenceEmploye) && !empty($posteEmploye)) 
 										{
 											$db = Database::connect();
-											$statement = $db->query('SELECT * FROM employe WHERE agence_employe = "'.$agenceEmploye.'" AND poste_employe = "'.$posteEmploye.'"');
+											$statement = $db->query('SELECT * FROM employe WHERE agence_employe = "'.$agenceEmploye.'" AND poste_employe = "'.$posteEmploye.'" ORDER BY agence_employe ASC, poste_employe ASC');
 											while($employe = $statement-> fetch()) 
 											{
 											echo '<tr>';
-											echo '<td>'. $employe['nom_employe'] . '</td>';
-											echo '<td>'. $employe['prenom_employe'] . '</td>';
-											echo '<td>'. $employe['agence_employe'] . '</td>';			                         
+											echo '<td>'. $employe['agence_employe'] . '</td>';
 											echo '<td>'. $employe['poste_employe'] . '</td>';
+											echo '<td>'. $employe['nom_employe'] . '</td>';			                         
+											echo '<td>'. $employe['prenom_employe'] . '</td>';
 											echo '<td><img src="images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
 											echo '</tr>';
 											}
@@ -384,14 +386,14 @@
 					                    if ($succes == true && !empty($nomEmploye) && empty($prenomEmploye) && empty($agenceEmploye) && empty($posteEmploye)) 
 										{
 											$db = Database::connect();
-											$statement = $db->query('SELECT * FROM employe WHERE nom_employe = "'.$nomEmploye.'"');
+											$statement = $db->query('SELECT * FROM employe WHERE nom_employe = "'.$nomEmploye.'" ORDER BY agence_employe ASC, poste_employe ASC');
 											while($employe = $statement-> fetch()) 
 											{
 											echo '<tr>';
-											echo '<td>'. $employe['nom_employe'] . '</td>';
-											echo '<td>'. $employe['prenom_employe'] . '</td>';
-											echo '<td>'. $employe['agence_employe'] . '</td>';			                         
+											echo '<td>'. $employe['agence_employe'] . '</td>';
 											echo '<td>'. $employe['poste_employe'] . '</td>';
+											echo '<td>'. $employe['nom_employe'] . '</td>';			                         
+											echo '<td>'. $employe['prenom_employe'] . '</td>';
 											echo '<td><img src="images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
 											echo '</tr>';
 											}
@@ -404,14 +406,14 @@
 										if ($succes == true && empty($nomEmploye) && !empty($prenomEmploye) && empty($agenceEmploye) && empty($posteEmploye)) 
 										{
 											$db = Database::connect();
-											$statement = $db->query('SELECT * FROM employe WHERE prenom_employe = "'.$prenomEmploye.'"');
+											$statement = $db->query('SELECT * FROM employe WHERE prenom_employe = "'.$prenomEmploye.'" ORDER BY agence_employe ASC, poste_employe ASC');
 											while($employe = $statement-> fetch()) 
 											{
 											echo '<tr>';
-											echo '<td>'. $employe['nom_employe'] . '</td>';
-											echo '<td>'. $employe['prenom_employe'] . '</td>';
-											echo '<td>'. $employe['agence_employe'] . '</td>';			                         
+											echo '<td>'. $employe['agence_employe'] . '</td>';
 											echo '<td>'. $employe['poste_employe'] . '</td>';
+											echo '<td>'. $employe['nom_employe'] . '</td>';			                         
+											echo '<td>'. $employe['prenom_employe'] . '</td>';
 											echo '<td><img src="images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
 											echo '</tr>';
 											}
@@ -424,14 +426,14 @@
 										if ($succes == true && empty($nomEmploye) && empty($prenomEmploye) && !empty($agenceEmploye) && empty($posteEmploye)) 
 										{
 											$db = Database::connect();
-											$statement = $db->query('SELECT * FROM employe WHERE agence_employe = "'.$agenceEmploye.'"');
+											$statement = $db->query('SELECT * FROM employe WHERE agence_employe = "'.$agenceEmploye.'" ORDER BY agence_employe ASC, poste_employe ASC');
 											while($employe = $statement-> fetch()) 
 											{
 											echo '<tr>';
-											echo '<td>'. $employe['nom_employe'] . '</td>';
-											echo '<td>'. $employe['prenom_employe'] . '</td>';
-											echo '<td>'. $employe['agence_employe'] . '</td>';			                         
+											echo '<td>'. $employe['agence_employe'] . '</td>';
 											echo '<td>'. $employe['poste_employe'] . '</td>';
+											echo '<td>'. $employe['nom_employe'] . '</td>';			                         
+											echo '<td>'. $employe['prenom_employe'] . '</td>';
 											echo '<td><img src="images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
 											echo '</tr>';
 											}
@@ -443,14 +445,14 @@
 										if ($succes == true && empty($nomEmploye) && empty($prenomEmploye) && empty($agenceEmploye) && !empty($posteEmploye)) 
 										{
 											$db = Database::connect();
-											$statement = $db->query('SELECT * FROM employe WHERE poste_employe = "'.$posteEmploye.'"');
+											$statement = $db->query('SELECT * FROM employe WHERE poste_employe = "'.$posteEmploye.'" ORDER BY agence_employe ASC, poste_employe ASC');
 											while($employe = $statement-> fetch()) 
 											{
 											echo '<tr>';
-											echo '<td>'. $employe['nom_employe'] . '</td>';
-											echo '<td>'. $employe['prenom_employe'] . '</td>';
-											echo '<td>'. $employe['agence_employe'] . '</td>';			                         
+											echo '<td>'. $employe['agence_employe'] . '</td>';
 											echo '<td>'. $employe['poste_employe'] . '</td>';
+											echo '<td>'. $employe['nom_employe'] . '</td>';			                         
+											echo '<td>'. $employe['prenom_employe'] . '</td>';
 											echo '<td><img src="images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
 											echo '</tr>';
 											}
