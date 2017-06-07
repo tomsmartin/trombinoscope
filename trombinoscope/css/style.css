@@ -312,3 +312,13 @@ header .header-trombi .main-menu-connexion
 {
 	color: red;
 }
+/* modification des liens */
+.administration-trombi form a
+{
+	background-color: #821942;
+	color: white;
+}
+.administration-trombi form a:hover
+{
+	background-color: #6DA542;
+}
