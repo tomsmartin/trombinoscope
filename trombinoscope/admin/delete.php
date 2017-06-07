@@ -49,7 +49,7 @@
 				<div class="col-md-6 col-sm-6 col-xs-6">
 					<div class="header-trombi">
 						<div class="main-menu">
-							<a href="../index.php"><img src="../images/logo.png"></a>
+							<a href="../../index.php"><img src="../images/logo.png"></a>
 						</div>
 					</div>			
 				</div>
