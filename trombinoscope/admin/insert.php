@@ -115,7 +115,7 @@
 				<div class="col-md-6 col-sm-6 col-xs-6">
 					<div class="header-trombi">
 						<div class="main-menu">
-							<a href="../index.php"><img src="../images/logo.png"></a>
+							<a href="../../index.php"><img src="../images/logo.png"></a>
 						</div>
 					</div>			
 				</div>
@@ -173,8 +173,8 @@
 										<span class="help-inline" style="color: red"><?php echo $agenceError;?></span>
 									</div>
 									<div class="form-group" for="poste">
-										<label id="poste">Poste :</label>	
-										<select class="selector" style="margin-left: 15px;" name="poste_employe">
+										<label id="poste">Service :</label>	
+										<select class="selector" style="margin-left: 4px;" name="poste_employe">
 											<?php
 												$db = Database::connect();
 					                           	foreach ($db->query('SELECT * FROM poste') as $row) 
@@ -187,6 +187,7 @@
 										<span class="help-inline" style="color: red"><?php echo $posteError;?></span>
 									</div>
 									<button type="submit" class="btn" style="margin-left: 65px;" name="validation">Ajouter l'employé</button>
+									<a href="index.php" class="btn" style="margin-left: 65px;"><span class="glyphicon glyphicon-arrow-left"></span> Retour</a>
 								</fieldset>
 							</form>						
 						</div>
