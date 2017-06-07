@@ -48,13 +48,13 @@
 				<div class="red-bar">
 					<div class="administration-trombi">
 						<div class="row">
-							<h1><strong>Liste des employés   </strong><a href="insert.php" class="btn" style="margin-left: 65px;"><span class="glyphicon glyphicon-plus"></span> Ajouter</a></h1>
+							<h1><strong>Liste des employés  </strong><a href="insert.php" class="btn" style="margin-left: 65px;"><span class="glyphicon glyphicon-plus"></span> Ajouter</a><a href="../index.php" class="btn" style="margin-left: 65px;"><span class="glyphicon glyphicon-arrow-left"></span> Retour</a></h1>
 			                <table class="table table-striped table-bordered">
 			                  <thead>
 			                    <tr>
 			                      <th>Nom</th>
 			                      <th>Prénom</th>
-			                      <th>Agence</th>
+			                      <th>Service</th>
 			                      <th>Poste</th>
 			                      <th>Image</th>
 			                    </tr>
