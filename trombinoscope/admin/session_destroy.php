@@ -1,6 +1,6 @@
 <?php
 	session_start();
 	session_destroy();
-	header('location: /trombinoscope/index.php');
+	header('location: /intranet.egetra/trombinoscope/index.php');
 	exit;
 ?>
