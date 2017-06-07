@@ -75,7 +75,7 @@
 		</header>
 		<section id="formulaire">
 			<div class="container">
-				<div class="red-bar">
+				<div class="red-bar">		
 					<div class="administration-trombi">
 						<div class="row">
 							<div class="col-md-3"></div>
@@ -120,7 +120,23 @@
 									</div>
 									<p class="alert alert-warning" style="width:380px">Vous devez remplir au moins un champ du formulaire</p>
 									<br>
-									<button type="submit" class="btn" style="margin-left: 65px;">Rechercher</button>
+
+									<?php
+										if (!isset($_SESSION['login'])) 
+										{
+										  	?>
+										  	<button type="submit" class="btn" style="margin-left: 65px;">Rechercher</button>
+										  	<?php
+										}
+										if (isset($_SESSION['login'])) 
+										{
+											?>
+											<button type="submit" class="btn" >Rechercher</button>
+											<a href="admin/index.php" class="btn">Administration</a>
+											<a href="admin/insert.php" class="btn">Ajouter un employé</a>
+											<?php
+										}
+									?>
 								</fieldset>						
 							</form>						
 						</div>
