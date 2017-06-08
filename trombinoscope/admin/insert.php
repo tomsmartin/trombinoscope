@@ -14,7 +14,7 @@
         $nomEmploye         = checkInput($_POST['nom_employe']);
         $prenomEmploye      = checkInput($_POST['prenom_employe']);
         $agenceEmploye      = checkInput($_POST['agence_employe']);
-        $posteEmploye       = checkInput($_POST['poste_employe']); 
+        $serviceEmploye     = checkInput($_POST['service_employe']); 
         $image              = checkInput($_FILES["image"]["name"]);
         $imagePath          = '../images/'. basename($image);
         $imageExtension     = pathinfo($imagePath,PATHINFO_EXTENSION);
@@ -36,7 +36,7 @@
             $agenceError = 'Ce champ ne peut pas être vide';
             $isSuccess = false;
         } 
-        if(empty($posteEmploye)) 
+        if(empty($serviceEmploye)) 
         {
             $posteError = 'Ce champ ne peut pas être vide';
             $isSuccess = false;
@@ -49,7 +49,7 @@
         else
         {
             $isUploadSuccess = true;
-            if($imageExtension != "jpg" && $imageExtension != "png" && $imageExtension != "jpeg" ) 
+            if($imageExtension != "jpg" && $imageExtension != "png" && $imageExtension != "jpeg" && $imageExtension != "PNG" && $imageExtension != "JPEG" && $imageExtension != "JPG") 
             {
                 $imageError = "Les fichiers autorises sont: .jpg, .jpeg, .png";
                 $isUploadSuccess = false;
@@ -68,7 +68,7 @@
             {
                 if(!move_uploaded_file($_FILES["image"]["tmp_name"], $imagePath)) 
                 {
-                    $imageError = "Il y a eu une erreur lors de l'upload";
+                    $imageError = "Il y a eu une erreur lors du téléchargement de la photo, vérifier la taille de votre photo qui doit être inférieur à 1Mo.";
                     $isUploadSuccess = false;
                 } 
             } 
@@ -78,8 +78,8 @@
         {
 
         	$db = Database::connect();
-            $statement = $db->prepare("INSERT INTO employe(nom_employe,prenom_employe,agence_employe,poste_employe,image_employe) values(?, ?, ?, ?, ?)");
-            $statement->execute(array($nomEmploye,$prenomEmploye,$agenceEmploye,$posteEmploye,$image));
+            $statement = $db->prepare("INSERT INTO employe(nom_employe,prenom_employe,agence_employe,service_employe,image_employe) values(?, ?, ?, ?, ?)");
+            $statement->execute(array($nomEmploye,$prenomEmploye,$agenceEmploye,$serviceEmploye,$image));
             Database::disconnect();
             header("Location: insert.php");
 
@@ -115,7 +115,7 @@
 				<div class="col-md-6 col-sm-6 col-xs-6">
 					<div class="header-trombi">
 						<div class="main-menu">
-							<a href="../../index.php"><img src="../images/logo.png"></a>
+							<a href="../index.php"><img src="../images/logo_accueil.png" style="margin-left: 180px; margin-bottom:20px"></a>
 						</div>
 					</div>			
 				</div>
@@ -146,6 +146,9 @@
 										<br>
 										<span class="help-inline" style="color: red"><?php echo $imageError;?></span>
 									</div>
+
+										<p class="alert alert-warning" style="width:380px">Le nom du fichier ne doit pas comporter d'accents!</p>
+									<br>
 									<div class="form-group" for="nom">
 										<label id="nom">Nom :</label>	
 										<input class="form-nom" type="text" name="nom_employe" placeholder="nom de l'employé" style="margin-left: 20px;" required="">
@@ -172,14 +175,14 @@
 										</select>
 										<span class="help-inline" style="color: red"><?php echo $agenceError;?></span>
 									</div>
-									<div class="form-group" for="poste">
-										<label id="poste">Service :</label>	
-										<select class="selector" style="margin-left: 4px;" name="poste_employe">
+									<div class="form-group" for="service">
+										<label id="service">Service :</label>	
+										<select class="selector" style="margin-left: 4px;" name="service_employe">
 											<?php
 												$db = Database::connect();
-					                           	foreach ($db->query('SELECT * FROM poste') as $row) 
+					                           	foreach ($db->query('SELECT * FROM service') as $row) 
 					                           	{
-					                                echo '<option value="'. $row['nom_poste'] .'">'. $row['nom_poste'] . '</option>';;
+					                                echo '<option value="'. $row['nom_service'] .'">'. $row['nom_service'] . '</option>';;
 					                           	}
 					                           	Database::disconnect();													
 											?>
@@ -187,7 +190,7 @@
 										<span class="help-inline" style="color: red"><?php echo $posteError;?></span>
 									</div>
 									<button type="submit" class="btn" style="margin-left: 65px;" name="validation">Ajouter l'employé</button>
-									<a href="index.php" class="btn" style="margin-left: 65px;"><span class="glyphicon glyphicon-arrow-left"></span> Retour</a>
+									<a href="index.php" class="btn" style="margin-left: 25px;"><span class="glyphicon glyphicon-arrow-left"></span> Retour</a>
 								</fieldset>
 							</form>						
 						</div>

@@ -1,24 +1,38 @@
-<?php    
-	include'database.php'; 
-    session_start();
+<?php 
+	session_start();
 	if (!isset($_SESSION['login'])) 
 	{
 	  	header("location: login.php");
-	}
-	if(!empty($_GET['id'])) 
-    {
-        $id = checkInput($_GET['id']);
-    }
+	 }      
+    include 'database.php';
+ 
+    $nomError =  "";
 
     if(!empty($_POST)) 
     {
-        $id = checkInput($_POST['id']);
-        $db = Database::connect();
-        $statement = $db->prepare("DELETE FROM employe WHERE id_employe = ?");
-        $statement->execute(array($id));
-        Database::disconnect();
-        header("Location: index.php"); 
+
+        $nomService        = checkInput($_POST['nom_service']);
+        $isSuccess          = true;
+
+        
+        if(empty($nomService)) 
+        {
+            $nomError = 'Ce champ ne peut pas être vide';
+            $isSuccess = false;
+        }
+        
+        if($isSuccess) 
+        {
+
+        	$db = Database::connect();
+            $statement = $db->prepare("INSERT INTO service(nom_service) values(?)");
+            $statement->execute(array($nomService));
+            Database::disconnect();
+            header("Location: admin_service.php");
+
+        }
     }
+
     function checkInput($data) 
     {
       $data = trim($data);
@@ -26,7 +40,6 @@
       $data = htmlspecialchars($data);
       return $data;
     }
-
 ?>
 <!DOCTYPE html>
 <html>
@@ -44,7 +57,7 @@
 		 
 	</head>
 	<body>
-	<header class="container">
+		<header class="container">
 			<div class="row">
 				<div class="col-md-6 col-sm-6 col-xs-6">
 					<div class="header-trombi">
@@ -68,20 +81,22 @@
 		<section id="formulaire">
 			<div class="container">
 				<div class="red-bar">
-			         <div class="administration-trombi">
+					<div class="administration-trombi">
 						<div class="row">
 							<div class="col-md-3"></div>
-							<div class="col-md-7">
-								<legend><span style="color: #6DA542; font-style: normal; padding-left: 0.5em;"> <em>Trombinoscope - Supprimer un employé</em></span></legend>
-								<form class="form" action="delete.php" role="form" method="post">
-				                    <input type="hidden" name="id" value="<?php echo $id;?>"/>
-				                    <p class="alert alert-warning" style="width:380px">Êtes-vous sur de vouloir supprimer l'employé ?</p>
-				                    <div class="form-actions" style="margin-left: 140px">
-				                      <button type="submit" class="btn btn-warning">Oui</button>
-				                      <a class="btn btn-default" href="index.php">Non</a>			                      
-			                    	</div>		                    			                    
-			                	</form>
-			                </div>								
+							<form action="insert_service.php" role="form" class="form-vertcial col-md-9" method="post">
+								<fieldset>
+									<legend><span style="color: #6DA542; font-style: normal; padding-left: 0.5em;"> <em>Trombinoscope - Ajout d'un service</em></span></legend>
+									<div class="form-group" for="nom">
+										<label id="nom">Nom du service :</label>	
+										<input class="form-nom" type="text" name="nom_service" placeholder="nom du service" style="margin-left: 20px;" required="">
+										<br>
+										<span class="help-inline" style="color: red"><?php echo $nomError;?></span>
+									</div>
+									<button type="submit" class="btn" style="margin-left: 65px;" name="validation">Ajouter le service</button>
+									<a href="index.php" class="btn" style="margin-left: 25px;"><span class="glyphicon glyphicon-arrow-left"></span> Retour</a>
+								</fieldset>
+							</form>						
 						</div>
 					</div>				
 				</div>
@@ -106,4 +121,4 @@
 			</div>			
 		</footer>
 	</body>
-</html>
+</html>''
