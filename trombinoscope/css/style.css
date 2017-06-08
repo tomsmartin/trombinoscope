@@ -328,3 +328,8 @@ header .header-trombi .main-menu-connexion
 	background-color: white;
 	color: blue;
 }
+/* Logo accueil*/
+body header .header-trombi a img
+{
+	margin-bottom: 80px;
+}
