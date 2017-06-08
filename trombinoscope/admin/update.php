@@ -18,7 +18,7 @@
         $nomEmploye         = checkInput($_POST['nom_employe']);
         $prenomEmploye      = checkInput($_POST['prenom_employe']);
         $agenceEmploye      = checkInput($_POST['agence_employe']);
-        $posteEmploye       = checkInput($_POST['poste_employe']); 
+        $serviceEmploye     = checkInput($_POST['service_employe']); 
         $image              = checkInput($_FILES["image"]["name"]);
         $imagePath          = '../images/'. basename($image);
         $imageExtension     = pathinfo($imagePath,PATHINFO_EXTENSION);
@@ -39,7 +39,7 @@
             $agenceError = 'Ce champ ne peut pas être vide';
             $isSuccess = false;
         } 
-        if(empty($posteEmploye)) 
+        if(empty($serviceEmploye)) 
         {
             $posteError = 'Ce champ ne peut pas être vide';
             $isSuccess = false;
@@ -83,13 +83,13 @@
         	$db = Database::connect();
         	if ($isImageUpdated) 
         	{
-        		$statement = $db->prepare("UPDATE employe SET nom_employe=?,prenom_employe=?,agence_employe=?,poste_employe=?,image_employe=? WHERE id_employe=?");
-            	$statement->execute(array($nomEmploye,$prenomEmploye,$agenceEmploye,$posteEmploye,$image,$id));
+        		$statement = $db->prepare("UPDATE employe SET nom_employe=?,prenom_employe=?,agence_employe=?,service_employe=?,image_employe=? WHERE id_employe=?");
+            	$statement->execute(array($nomEmploye,$prenomEmploye,$agenceEmploye,$serviceEmploye,$image,$id));
         	}
         	else
         	{
-        		$statement = $db->prepare("UPDATE employe SET nom_employe=?,prenom_employe=?,agence_employe=?,poste_employe=? WHERE id_employe=?");
-            	$statement->execute(array($nomEmploye,$prenomEmploye,$agenceEmploye,$posteEmploye,$id));
+        		$statement = $db->prepare("UPDATE employe SET nom_employe=?,prenom_employe=?,agence_employe=?,service_employe=? WHERE id_employe=?");
+            	$statement->execute(array($nomEmploye,$prenomEmploye,$agenceEmploye,$serviceEmploye,$id));
         	}
 
             Database::disconnect();
@@ -117,7 +117,7 @@
     	$nomEmploye         = $employe['nom_employe'];
         $prenomEmploye      = $employe['prenom_employe'];
         $agenceEmploye      = $employe['agence_employe'];
-        $posteEmploye       = $employe['poste_employe']; 
+        $serviceEmploye     = $employe['service_employe']; 
         $image              = $employe['image_employe'];
     	Database::disconnect();
     }
@@ -150,7 +150,7 @@
 				<div class="col-md-6 col-sm-6 col-xs-6">
 					<div class="header-trombi">
 						<div class="main-menu">
-							<a href="../../index.php"><img src="../images/logo.png"></a>
+							<a href="../index.php"><img src="../images/logo_accueil.png" style="margin-left: 180px; margin-bottom:20px"></a>
 						</div>
 					</div>			
 				</div>
@@ -211,17 +211,17 @@
 										</select>
 										<span class="help-inline" style="color: red"><?php echo $agenceError;?></span>
 									</div>
-									<div class="form-group" for="poste">
-										<label id="poste">Service :</label>	
-										<select class="selector" style="margin-left: 4px;" name="poste_employe">
+									<div class="form-group" for="service">
+										<label id="service">Service :</label>	
+										<select class="selector" style="margin-left: 4px;" name="service_employe">
 											<?php
 												$db = Database::connect();
-					                           	foreach ($db->query('SELECT * FROM poste') as $row) 
+					                           	foreach ($db->query('SELECT * FROM service') as $row) 
 					                           	{
-					                           		if($row['nom_poste'] == $posteEmploye)
-				                                        echo '<option selected="selected" value="'. $row['nom_poste'] .'">'. $row['nom_poste'] . '</option>';
+					                           		if($row['nom_service'] == $serviceEmploye)
+				                                        echo '<option selected="selected" value="'. $row['nom_service'] .'">'. $row['nom_service'] . '</option>';
 				                                    else
-					                                echo '<option value="'. $row['nom_poste'] .'">'. $row['nom_poste'] . '</option>';;
+					                                echo '<option value="'. $row['nom_service'] .'">'. $row['nom_service'] . '</option>';;
 					                           	}
 					                           	Database::disconnect();													
 											?>

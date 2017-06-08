@@ -52,21 +52,20 @@
 	<body>
 		<header class="container">
 			<div class="row">
-				<div class="col-md-6 col-sm-6 col-xs-6">
-					<div class="header-trombi">
+				<div class="col-md-2">		
+				</div>
+				<div class="col-md-6">
+				<div class="header-trombi">
 						<div class="main-menu">
-							<a href="../../index.php"><img src="../images/logo.png"></a>
+							<a href="../index.php"><img src="../images/logo_accueil.png" style="margin-bottom: 10px"></a>
 						</div>
-					</div>			
+					</div>						
 				</div>
 				<div class="col-md-3 col-sm-3 col-xs-3">
-					
-				</div>
-				<div class="col-md-3 col-sm-3 col-xs-3">
-					<div class="main-menu-connexion">
+					<!-- <div class="main-menu-connexion">
 						<ul class="fa-ul">
 							<a href="login.php"><li><i class="fa fa-lock" ></i> Connexion</li></a>		
-						</ul>
+						</ul> -->
 					</div>						
 				</div>
 			</div>
@@ -91,7 +90,7 @@
 									</div>
 									<span class="help-inline" style="color: red"><?php echo $error;?></span>
 									<button type="submit" class="btn" style="margin-left: 120px;" name="connexion" value="connexion">Se connecter</button>
-									<a href="index.php" class="btn" ><span class="glyphicon glyphicon-arrow-left"></span> Retour</a>
+									<a href="../index.php" class="btn" ><span class="glyphicon glyphicon-arrow-left"></span> Retour</a>
 								</fieldset>						
 							</form>						
 						</div>

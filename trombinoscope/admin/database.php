@@ -3,7 +3,7 @@
 class Database
 {
     private static $dbHost = "localhost";
-    private static $dbName = "egetra";
+    private static $dbName = "trombinoscope";
     private static $dbUsername = "root";
     private static $dbUserpassword = "";
     
@@ -15,7 +15,7 @@ class Database
         {
             try
             {
-              self::$connection = new PDO("mysql:host=" . self::$dbHost . ";dbname=" . self::$dbName , self::$dbUsername, self::$dbUserpassword);
+              self::$connection = new PDO("mysql:host=" . self::$dbHost . ";dbname=" . self::$dbName . ";charset=utf8" , self::$dbUsername, self::$dbUserpassword);
             }
             catch(PDOException $e)
             {
