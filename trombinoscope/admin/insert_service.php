@@ -24,10 +24,9 @@
         if($isSuccess) 
         {
 
-        	$db = Database::connect();
+
             $statement = $db->prepare("INSERT INTO service(nom_service) values(?)");
             $statement->execute(array($nomService));
-            Database::disconnect();
             header("Location: admin_service.php");
 
         }
@@ -59,22 +58,25 @@
 	<body>
 		<header class="container">
 			<div class="row">
-				<div class="col-md-6 col-sm-6 col-xs-6">
-					<div class="header-trombi">
-						<div class="main-menu">
-							<a href="../index.php"><img src="../images/logo_accueil.png" style="margin-left: 180px; margin-bottom:20px"></a>
-						</div>
-					</div>			
-				</div>
-				<div class="col-md-3 col-sm-3 col-xs-3">
-					
-				</div>
-				<div class="col-md-3 col-sm-3 col-xs-3">
-					<div class="main-menu-connexion">
+				<div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+					<div class="header-trombi col-md-2"></div>
+					<div class="col-md-7 col-sm-7 col-xs-7">
+						<a href="../index.php"><img src="../images/logo_accueil.png" style="margin: 60px 20px"></a>				
+					</div>
+					<div class="main-menu-connexion col-md-3 col-sm-3 col-xs-3">
 						<ul class="fa-ul">
-							<a href="session_destroy.php"><li><i class="fa fa-unlock" ></i> Déconnexion</li></a>		
+							<?php
+								if (!isset($_SESSION['login'])) 
+								{
+								  	echo '<a href="admin/login.php"><li><i class="fa fa-lock" ></i> Connexion</li></a>';
+								}
+								else if (isset($_SESSION['login'])) 
+								{
+									echo '<a href="session_destroy.php"><li><i class="fa fa-unlock" ></i> Déconnexion</li></a>';
+								}   
+							?>		
 						</ul>
-					</div>						
+					</div>								
 				</div>
 			</div>
 		</header>
@@ -83,18 +85,17 @@
 				<div class="red-bar">
 					<div class="administration-trombi">
 						<div class="row">
-							<div class="col-md-3"></div>
-							<form action="insert_service.php" role="form" class="form-vertcial col-md-9" method="post">
+							<div class="col-md-3 col-sm-2 col-xs-2"></div>
+							<form action="insert_service.php" role="form" class="form-vertcial col-md-9 col-sm-9 col-xs-9" method="post">
 								<fieldset>
-									<legend><span style="color: #6DA542; font-style: normal; padding-left: 0.5em;"> <em>Trombinoscope - Ajout d'un service</em></span></legend>
+									<legend><span style="color: #6DA542;"> <em>Administration - Ajout d'un service</em></span><a href="admin_service.php" class="btn" style="margin-left: 19px;"><span class="glyphicon glyphicon-arrow-left"></span> Retour</a></legend>
 									<div class="form-group" for="nom">
 										<label id="nom">Nom du service :</label>	
 										<input class="form-nom" type="text" name="nom_service" placeholder="nom du service" style="margin-left: 20px;" required="">
 										<br>
 										<span class="help-inline" style="color: red"><?php echo $nomError;?></span>
 									</div>
-									<button type="submit" class="btn" style="margin-left: 65px;" name="validation">Ajouter le service</button>
-									<a href="index.php" class="btn" style="margin-left: 25px;"><span class="glyphicon glyphicon-arrow-left"></span> Retour</a>
+									<button type="submit" class="btn" name="validation" style="margin-left: 138px;">Ajouter le service</button>
 								</fieldset>
 							</form>						
 						</div>
@@ -106,8 +107,8 @@
 			<div class="container">
 				<div class="red-bar">
 					<div class="row">
-						<div class="col-md-3"></div>
-							<div class="footer-trombi col-md-7">
+						<div class="col-md-3 col-sm-3 col-xs-3"></div>
+							<div class="footer-trombi col-md-7 col-sm-7 col-xs-7">
 								<br />
 								<br />
 								<ul>
@@ -121,4 +122,4 @@
 			</div>			
 		</footer>
 	</body>
-</html>''
+</html>

@@ -47,24 +47,27 @@
 		 
 	</head>
 	<body>
-	<header class="container">
+		<header class="container">
 			<div class="row">
-				<div class="col-md-6 col-sm-6 col-xs-6">
-					<div class="header-trombi">
-						<div class="main-menu">
-							<a href="../index.php"><img src="../images/logo_accueil.png" style="margin: 0px 0px 0px 180px "></a>
-						</div>
-					</div>			
-				</div>
-				<div class="col-md-3 col-sm-3 col-xs-3">
-					
-				</div>
-				<div class="col-md-3 col-sm-3 col-xs-3">
-					<div class="main-menu-connexion">
+				<div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+					<div class="header-trombi col-md-2"></div>
+					<div class="col-md-7 col-sm-7 col-xs-7">
+						<a href="../index.php"><img src="../images/logo_accueil.png" style="margin: 60px 20px"></a>				
+					</div>
+					<div class="main-menu-connexion col-md-3 col-sm-3 col-xs-3">
 						<ul class="fa-ul">
-							<a href="session_destroy.php"><li><i class="fa fa-unlock" ></i> Déconnexion</li></a>		
+							<?php
+								if (!isset($_SESSION['login'])) 
+								{
+								  	echo '<a href="admin/login.php"><li><i class="fa fa-lock" ></i> Connexion</li></a>';
+								}
+								else if (isset($_SESSION['login'])) 
+								{
+									echo '<a href="session_destroy.php"><li><i class="fa fa-unlock" ></i> Déconnexion</li></a>';
+								}   
+							?>		
 						</ul>
-					</div>						
+					</div>								
 				</div>
 			</div>
 		</header>
@@ -73,21 +76,21 @@
 				<div class="red-bar">		
 					<div class="administration-trombi">
 						<div class="row">
-							<div class="col-md-3"></div>
-							<form role="form" class="form-vertcial col-md-9" method="post" action="index.php">
+							<div class="col-md-3 col-sm-2 col-xs-2"></div>
+							<form role="form" class="form-vertcial col-md-9 col-sm-8 col-xs-8" method="post" action="index.php">
 								<fieldset>
-									<legend><span style="color: #6DA542; font-style: normal; padding-left: 0.5em;"> <em>Trombinoscope - Recherche</em></span><a href="../index.php" class="btn" style="margin-left: 65px;"><span class="glyphicon glyphicon-arrow-left"></span> Retour</a></legend>
+									<legend><span style="color: #6DA542;"> <em>Administration - Recherche</em></span><a href="../index.php" class="btn" style="margin-left: 80px;"><span class="glyphicon glyphicon-arrow-left"></span> Retour</a></legend>
 									<div class="form-group" for="agence">
 										<label id="agence">Agence :</label>	
 										<select class="selector" style="margin-left: 11px;" name="agence_employe">
 											<option value=""></option>
 											<?php
-												$db = Database::connect();
+												
 					                           	foreach ($db->query('SELECT * FROM agence ORDER BY nom_agence ASC') as $row) 
 					                           	{
 					                                echo '<option value="'. $row['nom_agence'] .'">'. $row['nom_agence'] . '</option>';;
 					                           	}
-					                           	Database::disconnect();													
+					                           												
 											?>
 										</select>
 									</div>
@@ -96,12 +99,12 @@
 										<select class="selector" style="margin-left: 6px;" name="service_employe">
 											<option value=""></option>
 											<?php
-												$db = Database::connect();
+												
 					                           	foreach ($db->query('SELECT * FROM service ORDER BY nom_service ASC') as $row) 
 					                           	{
 					                                echo '<option value="'. $row['nom_service'] .'">'. $row['nom_service'] . '</option>';;
 					                           	}
-					                           	Database::disconnect();													
+					                           														
 											?>
 										</select>
 									</div>
@@ -112,27 +115,9 @@
 									<div class="form-group" for="prenom">
 										<label id="prenom">Prénom :</label>	
 										<input class="form-nom" type="text" name="prenom_employe" id="prenom-employe" placeholder="prénom de l'employé" style="margin-left: 9px;">
-									</div>
-										
+									</div>										
 									<br>
-
-									<?php
-										if (!isset($_SESSION['login'])) 
-										{
-										  	?>
-										  	<button type="submit" class="btn" style="margin-left: 70px;">Rechercher</button>
-										  	
-										  	<?php
-										}
-										if (isset($_SESSION['login'])) 
-										{
-											?>
-											<button type="submit" class="btn" >Rechercher</button>
-											<a href="insert.php" class="btn">Ajouter un employé</a>
-
-											<?php
-										}
-									?>
+									<button type="submit" class="btn" style="margin-left: 70px;">Rechercher</button>										 
 								</fieldset>						
 							</form>						
 						</div>
@@ -153,11 +138,11 @@
 				                <table class="table table-striped table-bordered">
 				                  <thead>
 				                    <tr>
-				                      <th>Agence</th>
-				                      <th>Service</th>
+				                      <th>Image</th>
 				                      <th>Nom</th>
 				                      <th>Prénom</th>
-				                      <th>Image</th>
+				                      <th>Agence</th>
+				                      <th>Service</th>
 				                    </tr>
 				                  </thead>
 				                  <tbody>			                  
@@ -167,167 +152,167 @@
 
 					                    if ($succes == true && !empty($nomEmploye) && !empty($prenomEmploye) && !empty($agenceEmploye) && !empty($serviceEmploye)) 
 										{
-											$db = Database::connect();
+											
 											$statement = $db->query('SELECT * FROM employe WHERE nom_employe = "'.$nomEmploye.'" AND prenom_employe = "'.$prenomEmploye.'" AND agence_employe = "'.$agenceEmploye.'" AND service_employe = "'.$serviceEmploye.'" ORDER BY agence_employe ASC, service_employe ASC, nom_employe ASC, prenom_employe ASC ');
 											while($employe = $statement-> fetch()) 
 											{
-											echo '<tr>';
-											echo '<td>'. $employe['agence_employe'] . '</td>';
-											echo '<td>'. $employe['service_employe'] . '</td>';
-											echo '<td>'. $employe['nom_employe'] . '</td>';			                         
-											echo '<td>'. $employe['prenom_employe'] . '</td>';
-											echo '<td><img src="../images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
-											echo '<td width=300>';			                         
-				                            echo ' ';
-				                            echo '<a class="btn " href="update.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-pencil"></span> Modifier</a>';
-				                            echo ' ';
-				                            echo '<a class="btn " href="delete.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-remove"></span> Supprimer</a>';
-				                            echo '</td>';
-				                            echo '</tr>';
+												echo '<tr>';
+												echo '<td><img src="../images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
+												echo '<td>'. $employe['nom_employe'] . '</td>';
+												echo '<td>'. $employe['prenom_employe'] . '</td>';
+												echo '<td>'. $employe['agence_employe'] . '</td>';
+												echo '<td>'. $employe['service_employe'] . '</td>';
+												echo '<td width=300>';			                         
+					                            echo ' ';
+					                            echo '<a class="btn " href="update.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-pencil"></span> Modifier</a>';
+					                            echo ' ';
+					                            echo '<a class="btn " href="delete.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-remove"></span> Supprimer</a>';
+					                            echo '</td>';
+					                            echo '</tr>';
 											}
-											Database::disconnect();
+											
 										}
 										
 				                      	/* TRAITEMENT SI LES CHAMPS NOM, PRENOM ET AGENCE SONT SAISIS*/
 
 										if ($succes == true && !empty($nomEmploye) && !empty($prenomEmploye) && !empty($agenceEmploye) && empty($serviceEmploye)) 
 										{
-											$db = Database::connect();
+											
 											$statement = $db->query('SELECT * FROM employe WHERE nom_employe = "'.$nomEmploye.'" AND prenom_employe = "'.$prenomEmploye.'" AND agence_employe = "'.$agenceEmploye.'" ORDER BY agence_employe ASC, service_employe ASC, nom_employe ASC, prenom_employe ASC');
 											while($employe = $statement-> fetch()) 
 											{
-											echo '<tr>';
-											echo '<td>'. $employe['agence_employe'] . '</td>';
-											echo '<td>'. $employe['service_employe'] . '</td>';
-											echo '<td>'. $employe['nom_employe'] . '</td>';			                         
-											echo '<td>'. $employe['prenom_employe'] . '</td>';
-											echo '<td><img src="../images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
-											echo '<td width=300>';			                         
-				                            echo ' ';
-				                            echo '<a class="btn " href="update.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-pencil"></span> Modifier</a>';
-				                            echo ' ';
-				                            echo '<a class="btn " href="delete.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-remove"></span> Supprimer</a>';
-				                            echo '</td>';
-				                            echo '</tr>';
+												echo '<tr>';
+												echo '<td><img src="../images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
+												echo '<td>'. $employe['nom_employe'] . '</td>';
+												echo '<td>'. $employe['prenom_employe'] . '</td>';
+												echo '<td>'. $employe['agence_employe'] . '</td>';
+												echo '<td>'. $employe['service_employe'] . '</td>';
+												echo '<td width=300>';			                         
+					                            echo ' ';
+					                            echo '<a class="btn " href="update.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-pencil"></span> Modifier</a>';
+					                            echo ' ';
+					                            echo '<a class="btn " href="delete.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-remove"></span> Supprimer</a>';
+					                            echo '</td>';
+					                            echo '</tr>';
 											}	
-											Database::disconnect();
+											
 										}
 
 				                      	/* TRAITEMENT SI LES CHAMPS NOM, PRENOM ET SERVICE SONT SAISIS*/									
 
 										if ($succes == true && !empty($nomEmploye) && !empty($prenomEmploye) && empty($agenceEmploye) && !empty($serviceEmploye)) 
 										{
-											$db = Database::connect();
+											
 											$statement = $db->query('SELECT * FROM employe WHERE nom_employe = "'.$nomEmploye.'" AND prenom_employe = "'.$prenomEmploye.'" AND service_employe = "'.$serviceEmploye.'" ORDER BY agence_employe ASC, service_employe ASC, nom_employe ASC, prenom_employe ASC');
 											while($employe = $statement-> fetch()) 
 											{
-											echo '<tr>';
-											echo '<td>'. $employe['agence_employe'] . '</td>';
-											echo '<td>'. $employe['service_employe'] . '</td>';
-											echo '<td>'. $employe['nom_employe'] . '</td>';			                         
-											echo '<td>'. $employe['prenom_employe'] . '</td>';
-											echo '<td><img src="../images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
-											echo '<td width=300>';			                         
-				                            echo ' ';
-				                            echo '<a class="btn " href="update.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-pencil"></span> Modifier</a>';
-				                            echo ' ';
-				                            echo '<a class="btn " href="delete.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-remove"></span> Supprimer</a>';
-				                            echo '</td>';
-				                            echo '</tr>';
+												echo '<tr>';
+												echo '<td><img src="../images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
+												echo '<td>'. $employe['nom_employe'] . '</td>';
+												echo '<td>'. $employe['prenom_employe'] . '</td>';
+												echo '<td>'. $employe['agence_employe'] . '</td>';
+												echo '<td>'. $employe['service_employe'] . '</td>';
+												echo '<td width=300>';			                         
+					                            echo ' ';
+					                            echo '<a class="btn " href="update.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-pencil"></span> Modifier</a>';
+					                            echo ' ';
+					                            echo '<a class="btn " href="delete.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-remove"></span> Supprimer</a>';
+					                            echo '</td>';
+					                            echo '</tr>';
 											}
-											Database::disconnect();
+											
 										}
 
 				                      	/* TRAITEMENT SI LES CHAMPS NOM, AGENCE ET SERVICE SONT SAISIS*/
 
 										if ($succes == true && !empty($nomEmploye) && empty($prenomEmploye) && !empty($agenceEmploye) && !empty($serviceEmploye)) 
 										{
-											$db = Database::connect();
+											
 											$statement = $db->query('SELECT * FROM employe WHERE nom_employe = "'.$nomEmploye.'" AND agence_employe = "'.$agenceEmploye.'" AND service_employe = "'.$serviceEmploye.'" ORDER BY agence_employe ASC, service_employe ASC, nom_employe ASC, prenom_employe ASC');
 											while($employe = $statement-> fetch()) 
 											{
-											echo '<tr>';
-											echo '<td>'. $employe['agence_employe'] . '</td>';
-											echo '<td>'. $employe['service_employe'] . '</td>';
-											echo '<td>'. $employe['nom_employe'] . '</td>';			                         
-											echo '<td>'. $employe['prenom_employe'] . '</td>';
-											echo '<td><img src="../images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
-											echo '<td width=300>';			                         
-				                            echo ' ';
-				                            echo '<a class="btn " href="update.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-pencil"></span> Modifier</a>';
-				                            echo ' ';
-				                            echo '<a class="btn " href="delete.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-remove"></span> Supprimer</a>';
-				                            echo '</td>';
-				                            echo '</tr>';
+												echo '<tr>';
+												echo '<td><img src="../images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
+												echo '<td>'. $employe['nom_employe'] . '</td>';
+												echo '<td>'. $employe['prenom_employe'] . '</td>';
+												echo '<td>'. $employe['agence_employe'] . '</td>';
+												echo '<td>'. $employe['service_employe'] . '</td>';
+												echo '<td width=300>';			                         
+					                            echo ' ';
+					                            echo '<a class="btn " href="update.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-pencil"></span> Modifier</a>';
+					                            echo ' ';
+					                            echo '<a class="btn " href="delete.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-remove"></span> Supprimer</a>';
+					                            echo '</td>';
+					                            echo '</tr>';
 											}
-											Database::disconnect();
+											
 										}
 
 				                      	/* TRAITEMENT SI LES CHAMPS PRENOM, AGENCE ET SERVICE SONT SAISIS*/	
 
 										if ($succes == true && empty($nomEmploye) && !empty($prenomEmploye) && !empty($agenceEmploye) && !empty($serviceEmploye)) 
 										{
-											$db = Database::connect();
+											
 											$statement = $db->query('SELECT * FROM employe WHERE prenom_employe = "'.$prenomEmploye.'" AND agence_employe = "'.$agenceEmploye.'" AND service_employe = "'.$serviceEmploye.'" ORDER BY agence_employe ASC, service_employe ASC, nom_employe ASC, prenom_employe ASC');
 											while($employe = $statement-> fetch()) 
 											{
-											echo '<tr>';
-											echo '<td>'. $employe['agence_employe'] . '</td>';
-											echo '<td>'. $employe['service_employe'] . '</td>';
-											echo '<td>'. $employe['nom_employe'] . '</td>';			                         
-											echo '<td>'. $employe['prenom_employe'] . '</td>';
-											echo '<td><img src="../images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
-											echo '<td width=300>';			                         
-				                            echo ' ';
-				                            echo '<a class="btn " href="update.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-pencil"></span> Modifier</a>';
-				                            echo ' ';
-				                            echo '<a class="btn " href="delete.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-remove"></span> Supprimer</a>';
-				                            echo '</td>';
-				                            echo '</tr>';
+												echo '<tr>';
+												echo '<td><img src="../images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
+												echo '<td>'. $employe['nom_employe'] . '</td>';
+												echo '<td>'. $employe['prenom_employe'] . '</td>';
+												echo '<td>'. $employe['agence_employe'] . '</td>';
+												echo '<td>'. $employe['service_employe'] . '</td>';
+												echo '<td width=300>';			                         
+					                            echo ' ';
+					                            echo '<a class="btn " href="update.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-pencil"></span> Modifier</a>';
+					                            echo ' ';
+					                            echo '<a class="btn " href="delete.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-remove"></span> Supprimer</a>';
+					                            echo '</td>';
+					                            echo '</tr>';
 											}
-											Database::disconnect();
+											
 										}
 										
 				                      	/* TRAITEMENT SI LES CHAMPS NOM ET PRENOM SONT SAISIS*/
 
 										if ($succes == true && !empty($nomEmploye) && !empty($prenomEmploye) && empty($agenceEmploye) && empty($serviceEmploye)) 
 										{
-											$db = Database::connect();
+											
 											$statement = $db->query('SELECT * FROM employe WHERE nom_employe = "'.$nomEmploye.'" AND prenom_employe = "'.$prenomEmploye.'" ORDER BY agence_employe ASC, service_employe ASC, nom_employe ASC, prenom_employe ASC');
 											while($employe = $statement-> fetch()) 
 											{
-											echo '<tr>';
-											echo '<td>'. $employe['agence_employe'] . '</td>';
-											echo '<td>'. $employe['service_employe'] . '</td>';
-											echo '<td>'. $employe['nom_employe'] . '</td>';			                         
-											echo '<td>'. $employe['prenom_employe'] . '</td>';
-											echo '<td><img src="../images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
-											echo '<td width=300>';			                         
-				                            echo ' ';
-				                            echo '<a class="btn " href="update.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-pencil"></span> Modifier</a>';
-				                            echo ' ';
-				                            echo '<a class="btn " href="delete.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-remove"></span> Supprimer</a>';
-				                            echo '</td>';
-				                            echo '</tr>';
+												echo '<tr>';
+												echo '<td><img src="../images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
+												echo '<td>'. $employe['nom_employe'] . '</td>';
+												echo '<td>'. $employe['prenom_employe'] . '</td>';
+												echo '<td>'. $employe['agence_employe'] . '</td>';
+												echo '<td>'. $employe['service_employe'] . '</td>';
+												echo '<td width=300>';			                         
+					                            echo ' ';
+					                            echo '<a class="btn " href="update.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-pencil"></span> Modifier</a>';
+					                            echo ' ';
+					                            echo '<a class="btn " href="delete.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-remove"></span> Supprimer</a>';
+					                            echo '</td>';
+					                            echo '</tr>';
 											}
-											Database::disconnect();
+											
 										}
 										
 				                      	/* TRAITEMENT SI LES CHAMPS NOM ET AGENCE SONT SAISIS*/
 
 										if ($succes == true && !empty($nomEmploye) && empty($prenomEmploye) && !empty($agenceEmploye) && empty($serviceEmploye)) 
 					                    {
-					                      	$db = Database::connect();
+					                      	;
 					                      	$statement = $db->query('SELECT * FROM employe WHERE nom_employe = "'.$nomEmploye.'"  AND agence_employe = "'.$agenceEmploye.'" ORDER BY agence_employe ASC, service_employe ASC, nom_employe ASC, prenom_employe ASC');
 					                        while($employe = $statement-> fetch()) 
 					                        {
-					                            echo '<tr>';
-					                            echo '<td>'. $employe['agence_employe'] . '</td>';
-												echo '<td>'. $employe['service_employe'] . '</td>';
-												echo '<td>'. $employe['nom_employe'] . '</td>';			                         
+					                    		echo '<tr>';
+												echo '<td><img src="../images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
+												echo '<td>'. $employe['nom_employe'] . '</td>';
 												echo '<td>'. $employe['prenom_employe'] . '</td>';
-					                            echo '<td><img src="../images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
-					                            echo '<td width=300>';			                         
+												echo '<td>'. $employe['agence_employe'] . '</td>';
+												echo '<td>'. $employe['service_employe'] . '</td>';
+												echo '<td width=300>';			                         
 					                            echo ' ';
 					                            echo '<a class="btn " href="update.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-pencil"></span> Modifier</a>';
 					                            echo ' ';
@@ -335,7 +320,7 @@
 					                            echo '</td>';
 					                            echo '</tr>';
 
-					                            Database::disconnect();
+					                            
 					                        }
 					                    }
 					                        
@@ -343,75 +328,75 @@
 
 										if ($succes == true && !empty($nomEmploye) && empty($prenomEmploye) && empty($agenceEmploye) && !empty($serviceEmploye)) 
 										{
-											$db = Database::connect();
+											
 											$statement = $db->query('SELECT * FROM employe WHERE nom_employe = "'.$nomEmploye.'" AND service_employe = "'.$serviceEmploye.'" ORDER BY agence_employe ASC, service_employe ASC, nom_employe ASC, prenom_employe ASC');
 											while($employe = $statement-> fetch()) 
 											{
-											echo '<tr>';
-											echo '<td>'. $employe['agence_employe'] . '</td>';
-											echo '<td>'. $employe['service_employe'] . '</td>';
-											echo '<td>'. $employe['nom_employe'] . '</td>';			                         
-											echo '<td>'. $employe['prenom_employe'] . '</td>';
-											echo '<td><img src="../images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
-											echo '<td width=300>';			                         
-				                            echo ' ';
-				                            echo '<a class="btn " href="update.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-pencil"></span> Modifier</a>';
-				                            echo ' ';
-				                            echo '<a class="btn " href="delete.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-remove"></span> Supprimer</a>';
-				                            echo '</td>';
-				                            echo '</tr>';
+												echo '<tr>';
+												echo '<td><img src="../images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
+												echo '<td>'. $employe['nom_employe'] . '</td>';
+												echo '<td>'. $employe['prenom_employe'] . '</td>';
+												echo '<td>'. $employe['agence_employe'] . '</td>';
+												echo '<td>'. $employe['service_employe'] . '</td>';
+												echo '<td width=300>';			                         
+					                            echo ' ';
+					                            echo '<a class="btn " href="update.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-pencil"></span> Modifier</a>';
+					                            echo ' ';
+					                            echo '<a class="btn " href="delete.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-remove"></span> Supprimer</a>';
+					                            echo '</td>';
+					                            echo '</tr>';
 											}
-											Database::disconnect();	
+												
 										}
 
 				                      	/* TRAITEMENT SI LES CHAMPS PRENOM ET AGENCE SONT SAISIS*/	
 
 										if ($succes == true && empty($nomEmploye) && !empty($prenomEmploye) && !empty($agenceEmploye) && empty($serviceEmploye)) 
 										{
-											$db = Database::connect();
+											
 											$statement = $db->query('SELECT * FROM employe WHERE prenom_employe = "'.$prenomEmploye.'" AND agence_employe = "'.$agenceEmploye.'" ORDER BY agence_employe ASC, service_employe ASC, nom_employe ASC, prenom_employe ASC');
 											while($employe = $statement-> fetch()) 
 											{
-											echo '<tr>';
-											echo '<td>'. $employe['agence_employe'] . '</td>';
-											echo '<td>'. $employe['service_employe'] . '</td>';
-											echo '<td>'. $employe['nom_employe'] . '</td>';			                         
-											echo '<td>'. $employe['prenom_employe'] . '</td>';
-											echo '<td><img src="../images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
-											echo '<td width=300>';			                         
-				                            echo ' ';
-				                            echo '<a class="btn " href="update.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-pencil"></span> Modifier</a>';
-				                            echo ' ';
-				                            echo '<a class="btn " href="delete.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-remove"></span> Supprimer</a>';
-				                            echo '</td>';
-				                            echo '</tr>';
+												echo '<tr>';
+												echo '<td><img src="../images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
+												echo '<td>'. $employe['nom_employe'] . '</td>';
+												echo '<td>'. $employe['prenom_employe'] . '</td>';
+												echo '<td>'. $employe['agence_employe'] . '</td>';
+												echo '<td>'. $employe['service_employe'] . '</td>';
+												echo '<td width=300>';			                         
+					                            echo ' ';
+					                            echo '<a class="btn " href="update.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-pencil"></span> Modifier</a>';
+					                            echo ' ';
+					                            echo '<a class="btn " href="delete.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-remove"></span> Supprimer</a>';
+					                            echo '</td>';
+					                            echo '</tr>';
 											}
-											Database::disconnect();
+											
 										}
 
 				                      	/* TRAITEMENT SI LES CHAMPS PRENOM ET SERVICE SONT SAISIS*/										
 
 										if ($succes == true && empty($nomEmploye) && !empty($prenomEmploye) && empty($agenceEmploye) && !empty($serviceEmploye)) 
 										{
-											$db = Database::connect();
+											
 											$statement = $db->query('SELECT * FROM employe WHERE prenom_employe = "'.$prenomEmploye.'" AND service_employe = "'.$serviceEmploye.'" ORDER BY agence_employe ASC, service_employe ASC, nom_employe ASC, prenom_employe ASC');
 											while($employe = $statement-> fetch()) 
 											{
-											echo '<tr>';
-											echo '<td>'. $employe['agence_employe'] . '</td>';
-											echo '<td>'. $employe['service_employe'] . '</td>';
-											echo '<td>'. $employe['nom_employe'] . '</td>';			                         
-											echo '<td>'. $employe['prenom_employe'] . '</td>';
-											echo '<td><img src=".../images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
-											echo '<td width=300>';			                         
-				                            echo ' ';
-				                            echo '<a class="btn " href="update.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-pencil"></span> Modifier</a>';
-				                            echo ' ';
-				                            echo '<a class="btn " href="delete.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-remove"></span> Supprimer</a>';
-				                            echo '</td>';
-				                            echo '</tr>';
+												echo '<tr>';
+												echo '<td><img src="../images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
+												echo '<td>'. $employe['nom_employe'] . '</td>';
+												echo '<td>'. $employe['prenom_employe'] . '</td>';
+												echo '<td>'. $employe['agence_employe'] . '</td>';
+												echo '<td>'. $employe['service_employe'] . '</td>';
+												echo '<td width=300>';			                         
+					                            echo ' ';
+					                            echo '<a class="btn " href="update.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-pencil"></span> Modifier</a>';
+					                            echo ' ';
+					                            echo '<a class="btn " href="delete.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-remove"></span> Supprimer</a>';
+					                            echo '</td>';
+					                            echo '</tr>';
 											}
-											Database::disconnect();
+											
 										}
 										
 
@@ -419,25 +404,25 @@
 
 										if ($succes == true && empty($nomEmploye) && empty($prenomEmploye) && !empty($agenceEmploye) && !empty($serviceEmploye)) 
 										{
-											$db = Database::connect();
+											
 											$statement = $db->query('SELECT * FROM employe WHERE agence_employe = "'.$agenceEmploye.'" AND service_employe = "'.$serviceEmploye.'" ORDER BY agence_employe ASC, service_employe ASC, nom_employe ASC, prenom_employe ASC');
 											while($employe = $statement-> fetch()) 
 											{
-											echo '<tr>';
-											echo '<td>'. $employe['agence_employe'] . '</td>';
-											echo '<td>'. $employe['service_employe'] . '</td>';
-											echo '<td>'. $employe['nom_employe'] . '</td>';			                         
-											echo '<td>'. $employe['prenom_employe'] . '</td>';
-											echo '<td><img src="../images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
-											echo '<td width=300>';			                         
-				                            echo ' ';
-				                            echo '<a class="btn " href="update.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-pencil"></span> Modifier</a>';
-				                            echo ' ';
-				                            echo '<a class="btn " href="delete.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-remove"></span> Supprimer</a>';
-				                            echo '</td>';
-				                            echo '</tr>';;
+												echo '<tr>';
+												echo '<td><img src="../images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
+												echo '<td>'. $employe['nom_employe'] . '</td>';
+												echo '<td>'. $employe['prenom_employe'] . '</td>';
+												echo '<td>'. $employe['agence_employe'] . '</td>';
+												echo '<td>'. $employe['service_employe'] . '</td>';
+												echo '<td width=300>';			                         
+					                            echo ' ';
+					                            echo '<a class="btn " href="update.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-pencil"></span> Modifier</a>';
+					                            echo ' ';
+					                            echo '<a class="btn " href="delete.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-remove"></span> Supprimer</a>';
+					                            echo '</td>';
+					                            echo '</tr>';
 											}
-											Database::disconnect();	
+												
 										}
 											
 
@@ -445,25 +430,25 @@
 
 					                    if ($succes == true && !empty($nomEmploye) && empty($prenomEmploye) && empty($agenceEmploye) && empty($serviceEmploye)) 
 										{
-											$db = Database::connect();
+											
 											$statement = $db->query('SELECT * FROM employe WHERE nom_employe = "'.$nomEmploye.'" ORDER BY agence_employe ASC, service_employe ASC, nom_employe ASC, prenom_employe ASC');
 											while($employe = $statement-> fetch()) 
 											{
-											echo '<tr>';
-											echo '<td>'. $employe['agence_employe'] . '</td>';
-											echo '<td>'. $employe['service_employe'] . '</td>';
-											echo '<td>'. $employe['nom_employe'] . '</td>';			                         
-											echo '<td>'. $employe['prenom_employe'] . '</td>';
-											echo '<td><img src="../images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
-											echo '<td width=300>';			                         
-				                            echo ' ';
-				                            echo '<a class="btn " href="update.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-pencil"></span> Modifier</a>';
-				                            echo ' ';
-				                            echo '<a class="btn " href="delete.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-remove"></span> Supprimer</a>';
-				                            echo '</td>';
-				                            echo '</tr>';
+												echo '<tr>';
+												echo '<td><img src="../images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
+												echo '<td>'. $employe['nom_employe'] . '</td>';
+												echo '<td>'. $employe['prenom_employe'] . '</td>';
+												echo '<td>'. $employe['agence_employe'] . '</td>';
+												echo '<td>'. $employe['service_employe'] . '</td>';
+												echo '<td width=300>';			                         
+					                            echo ' ';
+					                            echo '<a class="btn " href="update.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-pencil"></span> Modifier</a>';
+					                            echo ' ';
+					                            echo '<a class="btn " href="delete.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-remove"></span> Supprimer</a>';
+					                            echo '</td>';
+					                            echo '</tr>';
 											}
-											Database::disconnect();
+											
 										}
 										
 
@@ -471,25 +456,25 @@
 
 										if ($succes == true && empty($nomEmploye) && !empty($prenomEmploye) && empty($agenceEmploye) && empty($serviceEmploye)) 
 										{
-											$db = Database::connect();
+											
 											$statement = $db->query('SELECT * FROM employe WHERE prenom_employe = "'.$prenomEmploye.'" ORDER BY agence_employe ASC, service_employe ASC, nom_employe ASC, prenom_employe ASC');
 											while($employe = $statement-> fetch()) 
 											{
-											echo '<tr>';
-											echo '<td>'. $employe['agence_employe'] . '</td>';
-											echo '<td>'. $employe['service_employe'] . '</td>';
-											echo '<td>'. $employe['nom_employe'] . '</td>';			                         
-											echo '<td>'. $employe['prenom_employe'] . '</td>';
-											echo '<td><img src="../images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
-											echo '<td width=300>';			                         
-				                            echo ' ';
-				                            echo '<a class="btn " href="update.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-pencil"></span> Modifier</a>';
-				                            echo ' ';
-				                            echo '<a class="btn " href="delete.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-remove"></span> Supprimer</a>';
-				                            echo '</td>';
-				                            echo '</tr>';
+												echo '<tr>';
+												echo '<td><img src="../images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
+												echo '<td>'. $employe['nom_employe'] . '</td>';
+												echo '<td>'. $employe['prenom_employe'] . '</td>';
+												echo '<td>'. $employe['agence_employe'] . '</td>';
+												echo '<td>'. $employe['service_employe'] . '</td>';
+												echo '<td width=300>';			                         
+					                            echo ' ';
+					                            echo '<a class="btn " href="update.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-pencil"></span> Modifier</a>';
+					                            echo ' ';
+					                            echo '<a class="btn " href="delete.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-remove"></span> Supprimer</a>';
+					                            echo '</td>';
+					                            echo '</tr>';
 											}
-											Database::disconnect();
+											
 										}
 										
 
@@ -497,50 +482,50 @@
 
 										if ($succes == true && empty($nomEmploye) && empty($prenomEmploye) && !empty($agenceEmploye) && empty($serviceEmploye)) 
 										{
-											$db = Database::connect();
+											
 											$statement = $db->query('SELECT * FROM employe WHERE agence_employe = "'.$agenceEmploye.'" ORDER BY agence_employe ASC, service_employe ASC, nom_employe ASC, prenom_employe ASC');
 											while($employe = $statement-> fetch()) 
 											{
-											echo '<tr>';
-											echo '<td>'. $employe['agence_employe'] . '</td>';
-											echo '<td>'. $employe['service_employe'] . '</td>';
-											echo '<td>'. $employe['nom_employe'] . '</td>';			                         
-											echo '<td>'. $employe['prenom_employe'] . '</td>';
-											echo '<td><img src="../images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
-											echo '<td width=300>';			                         
-				                            echo ' ';
-				                            echo '<a class="btn " href="update.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-pencil"></span> Modifier</a>';
-				                            echo ' ';
-				                            echo '<a class="btn " href="delete.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-remove"></span> Supprimer</a>';
-				                            echo '</td>';
-				                            echo '</tr>';
-											}
-											Database::disconnect();
+												echo '<tr>';
+												echo '<td><img src="../images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
+												echo '<td>'. $employe['nom_employe'] . '</td>';
+												echo '<td>'. $employe['prenom_employe'] . '</td>';
+												echo '<td>'. $employe['agence_employe'] . '</td>';
+												echo '<td>'. $employe['service_employe'] . '</td>';
+												echo '<td width=300>';			                         
+					                            echo ' ';
+					                            echo '<a class="btn " href="update.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-pencil"></span> Modifier</a>';
+					                            echo ' ';
+					                            echo '<a class="btn " href="delete.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-remove"></span> Supprimer</a>';
+					                            echo '</td>';
+					                            echo '</tr>';
+					                        }
+											
 										}
 										
 										/* TRAITEMENT SI IL Y A JUSTE LE SERVICE DE SELECTIONNER */
 
 										if ($succes == true && empty($nomEmploye) && empty($prenomEmploye) && empty($agenceEmploye) && !empty($serviceEmploye)) 
 										{
-											$db = Database::connect();
+											
 											$statement = $db->query('SELECT * FROM employe WHERE service_employe = "'.$serviceEmploye.'" ORDER BY agence_employe ASC, service_employe ASC, nom_employe ASC, prenom_employe ASC');
 											while($employe = $statement-> fetch()) 
 											{
-											echo '<tr>';
-											echo '<td>'. $employe['agence_employe'] . '</td>';
-											echo '<td>'. $employe['service_employe'] . '</td>';
-											echo '<td>'. $employe['nom_employe'] . '</td>';			                         
-											echo '<td>'. $employe['prenom_employe'] . '</td>';
-											echo '<td><img src="../images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
-											echo '<td width=300>';			                         
-				                            echo ' ';
-				                            echo '<a class="btn " href="update.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-pencil"></span> Modifier</a>';
-				                            echo ' ';
-				                            echo '<a class="btn " href="delete.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-remove"></span> Supprimer</a>';
-				                            echo '</td>';
-											echo '</tr>';
+												echo '<tr>';
+												echo '<td><img src="../images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
+												echo '<td>'. $employe['nom_employe'] . '</td>';
+												echo '<td>'. $employe['prenom_employe'] . '</td>';
+												echo '<td>'. $employe['agence_employe'] . '</td>';
+												echo '<td>'. $employe['service_employe'] . '</td>';
+												echo '<td width=300>';			                         
+					                            echo ' ';
+					                            echo '<a class="btn " href="update.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-pencil"></span> Modifier</a>';
+					                            echo ' ';
+					                            echo '<a class="btn " href="delete.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-remove"></span> Supprimer</a>';
+					                            echo '</td>';
+					                            echo '</tr>';
 											}
-											Database::disconnect();
+											
 										}
 					                    ?>
 				                  </tbody>
@@ -562,34 +547,34 @@
 			                <table class="table table-striped table-bordered">
 			                  <thead>
 			                    <tr>
-			                      <th>Agence</th>
-			                      <th>Service</th>
+			                      <th>Image</th>
 			                      <th>Nom</th>
 			                      <th>Prénom</th>
-			                      <th>Image</th>
+			                      <th>Agence</th>
+			                      <th>Service</th>
 			                    </tr>
 			                  </thead>
 			                  <tbody>
 			                      <?php			                        
-			                        $db = Database::connect();
+			                        
 			                        $statement = $db->query('SELECT * FROM employe ORDER BY agence_employe ASC,service_employe ASC, nom_employe ASC, prenom_employe ASC');
 			                        while($employe = $statement-> fetch()) 
 			                        {
-			                            echo '<tr>';
-			                            echo '<td>'. $employe['agence_employe'] . '</td>';
-			                            echo '<td>'. $employe['service_employe'] . '</td>';
-			                            echo '<td>'. $employe['nom_employe'] . '</td>';			                         
-			                            echo '<td>'. $employe['prenom_employe'] . '</td>';
-			                            echo '<td><img src="../images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
-			                            echo '<td width=300>';			                         
-			                            echo ' ';
-			                            echo '<a class="btn " href="update.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-pencil"></span> Modifier</a>';
-			                            echo ' ';
-			                            echo '<a class="btn " href="delete.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-remove"></span> Supprimer</a>';
-			                            echo '</td>';
-			                            echo '</tr>';
+			                            	echo '<tr>';
+											echo '<td><img src="../images/'.$employe['image_employe'].'" alt="" width="120" height="120"></td>';
+											echo '<td>'. $employe['nom_employe'] . '</td>';
+											echo '<td>'. $employe['prenom_employe'] . '</td>';
+											echo '<td>'. $employe['agence_employe'] . '</td>';
+											echo '<td>'. $employe['service_employe'] . '</td>';
+											echo '<td width=300>';			                         
+				                            echo ' ';
+				                            echo '<a class="btn " href="update.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-pencil"></span> Modifier</a>';
+				                            echo ' ';
+				                            echo '<a class="btn " href="delete.php?id='.$employe['id_employe'].'"><span class="glyphicon glyphicon-remove"></span> Supprimer</a>';
+				                            echo '</td>';
+				                            echo '</tr>';
 			                        }
-			                        Database::disconnect();
+			                        
 			                      ?>
 			                  </tbody>
 			                </table>
@@ -602,8 +587,8 @@
 			<div class="container">
 				<div class="red-bar">
 					<div class="row">
-						<div class="col-md-3"></div>
-							<div class="footer-trombi col-md-7">
+						<div class="col-md-3 col-sm-3 col-xs-3"></div>
+							<div class="footer-trombi col-md-7 col-sm-7 col-xs-7">
 								<br />
 								<br />
 								<ul>

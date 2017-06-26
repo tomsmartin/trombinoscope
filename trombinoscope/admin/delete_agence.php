@@ -13,10 +13,8 @@
     if(!empty($_POST)) 
     {
         $idAgence = checkInput($_POST['id_agence']);
-        $db = Database::connect();
         $statement = $db->prepare("DELETE FROM agence WHERE id_agence = ?");
         $statement->execute(array($idAgence));
-        Database::disconnect();
         header("Location: admin_agence.php"); 
     }
     function checkInput($data) 
@@ -44,24 +42,27 @@
 		 
 	</head>
 	<body>
-	<header class="container">
+		<header class="container">
 			<div class="row">
-				<div class="col-md-6 col-sm-6 col-xs-6">
-					<div class="header-trombi">
-						<div class="main-menu">
-							<a href="../index.php"><img src="../images/logo_accueil.png" style="margin-left: 180px; margin-bottom:20px"></a>
-						</div>
-					</div>			
-				</div>
-				<div class="col-md-3 col-sm-3 col-xs-3">
-					
-				</div>
-				<div class="col-md-3 col-sm-3 col-xs-3">
-					<div class="main-menu-connexion">
+				<div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+					<div class="header-trombi col-md-2"></div>
+					<div class="col-md-7 col-sm-7 col-xs-7">
+						<a href="../index.php"><img src="../images/logo_accueil.png" style="margin: 60px 20px"></a>				
+					</div>
+					<div class="main-menu-connexion col-md-3 col-sm-3 col-xs-3">
 						<ul class="fa-ul">
-							<a href="session_destroy.php"><li><i class="fa fa-unlock" ></i> Déconnexion</li></a>		
+							<?php
+								if (!isset($_SESSION['login'])) 
+								{
+								  	echo '<a href="admin/login.php"><li><i class="fa fa-lock" ></i> Connexion</li></a>';
+								}
+								else if (isset($_SESSION['login'])) 
+								{
+									echo '<a href="session_destroy.php"><li><i class="fa fa-unlock" ></i> Déconnexion</li></a>';
+								}   
+							?>		
 						</ul>
-					</div>						
+					</div>								
 				</div>
 			</div>
 		</header>
@@ -70,10 +71,10 @@
 				<div class="red-bar">
 			         <div class="administration-trombi">
 						<div class="row">
-							<div class="col-md-3"></div>
-							<div class="col-md-7">
-								<legend><span style="color: #6DA542; font-style: normal; padding-left: 0.5em;"> <em>Trombinoscope - Supprimer une agence</em></span></legend>
+							<div class="col-md-3 col-sm-2 col-xs-2"></div>
+							<div class="col-md-7 col-sm-7 col-xs-7">
 								<form class="form" action="delete_agence.php" role="form" method="post">
+									<legend style="width: 380px;"><span style="color: #6DA542;"> <em>Administration - Supprimer une agence</em></span></legend>
 				                    <input type="hidden" name="id_agence" value="<?php echo $id;?>"/>
 				                    <p class="alert alert-warning" style="width:380px">Êtes-vous sur de vouloir supprimer l'agence ?</p>
 				                    <div class="form-actions" style="margin-left: 140px">
@@ -91,8 +92,8 @@
 			<div class="container">
 				<div class="red-bar">
 					<div class="row">
-						<div class="col-md-3"></div>
-							<div class="footer-trombi col-md-7">
+						<div class="col-md-3 col-sm-3 col-xs-3"></div>
+							<div class="footer-trombi col-md-7 col-sm-7 col-xs-7">
 								<br />
 								<br />
 								<ul>

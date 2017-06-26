@@ -76,11 +76,9 @@
         
         if($isSuccess && $isUploadSuccess) 
         {
-
-        	$db = Database::connect();
+        
             $statement = $db->prepare("INSERT INTO employe(nom_employe,prenom_employe,agence_employe,service_employe,image_employe) values(?, ?, ?, ?, ?)");
             $statement->execute(array($nomEmploye,$prenomEmploye,$agenceEmploye,$serviceEmploye,$image));
-            Database::disconnect();
             header("Location: insert.php");
 
         }
@@ -112,22 +110,25 @@
 	<body>
 		<header class="container">
 			<div class="row">
-				<div class="col-md-6 col-sm-6 col-xs-6">
-					<div class="header-trombi">
-						<div class="main-menu">
-							<a href="../index.php"><img src="../images/logo_accueil.png" style="margin-left: 180px; margin-bottom:20px"></a>
-						</div>
-					</div>			
-				</div>
-				<div class="col-md-3 col-sm-3 col-xs-3">
-					
-				</div>
-				<div class="col-md-3 col-sm-3 col-xs-3">
-					<div class="main-menu-connexion">
+				<div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+					<div class="header-trombi col-md-2"></div>
+					<div class="col-md-7 col-sm-7 col-xs-7">
+						<a href="../index.php"><img src="../images/logo_accueil.png" style="margin: 60px 20px"></a>				
+					</div>
+					<div class="main-menu-connexion col-md-3 col-sm-3 col-xs-3">
 						<ul class="fa-ul">
-							<a href="session_destroy.php"><li><i class="fa fa-unlock" ></i> Déconnexion</li></a>		
+							<?php
+								if (!isset($_SESSION['login'])) 
+								{
+								  	echo '<a href="admin/login.php"><li><i class="fa fa-lock" ></i> Connexion</li></a>';
+								}
+								else if (isset($_SESSION['login'])) 
+								{
+									echo '<a href="session_destroy.php"><li><i class="fa fa-unlock" ></i> Déconnexion</li></a>';
+								}   
+							?>		
 						</ul>
-					</div>						
+					</div>								
 				</div>
 			</div>
 		</header>
@@ -136,10 +137,10 @@
 				<div class="red-bar">
 					<div class="administration-trombi">
 						<div class="row">
-							<div class="col-md-3"></div>
+							<div class="col-md-3 col-sm-2 col-xs-2"></div>
 							<form action="insert.php" role="form" class="form-vertcial col-md-9" method="post" enctype="multipart/form-data">
 								<fieldset>
-									<legend><span style="color: #6DA542; font-style: normal; padding-left: 0.5em;"> <em>Trombinoscope - Administration</em></span></legend>
+									<legend><span style="color: #6DA542;"> <em>Trombinoscope - Administration</em></span><a href="index.php" class="btn" style="margin-left: 40px;"><span class="glyphicon glyphicon-arrow-left"></span> Retour</a></legend>
 									<div class="form-group" for="photo">
 										<label for="photo_employe" id="photo">Photo de l'employé (max. 1 Mo):</label>	
 										<input type="file" id="photo_employe" name="image" placeholder="photo de l'employé" required="">
@@ -151,26 +152,26 @@
 									<br>
 									<div class="form-group" for="nom">
 										<label id="nom">Nom :</label>	
-										<input class="form-nom" type="text" name="nom_employe" placeholder="nom de l'employé" style="margin-left: 20px;" required="">
+										<input class="form-nom" type="text" name="nom_employe" placeholder="nom de l'employé" style="margin-left: 29px;" required="">
 										<br>
 										<span class="help-inline" style="color: red"><?php echo $nomError;?></span>
 									</div>
 									<div class="form-group" for="prenom">
 										<label id="prenom">Prenom :</label>	
-										<input class="form-nom" type="text" name="prenom_employe" placeholder="prenom de l'employé" required="">
+										<input class="form-nom" type="text" name="prenom_employe" placeholder="prenom de l'employé" style="margin-left: 8px;" required="">
 										<br>
 										<span class="help-inline" style="color: red"><?php echo $prenomError;?></span>
 									</div>
 									<div class="form-group" for="agence">
 										<label id="agence">Agence :</label>	
-										<select class="selector" style="margin-left: 2px;" name="agence_employe" >
+										<select class="selector" style="margin-left: 9px;" name="agence_employe" >
 											<?php
-												$db = Database::connect();
+												
 					                           	foreach ($db->query('SELECT * FROM agence') as $row) 
 					                           	{
 					                                echo '<option value="'. $row['nom_agence'] .'">'. $row['nom_agence'] . '</option>';;
 					                           	}
-					                           	Database::disconnect();													
+					                           														
 											?>
 										</select>
 										<span class="help-inline" style="color: red"><?php echo $agenceError;?></span>
@@ -179,18 +180,17 @@
 										<label id="service">Service :</label>	
 										<select class="selector" style="margin-left: 4px;" name="service_employe">
 											<?php
-												$db = Database::connect();
+												
 					                           	foreach ($db->query('SELECT * FROM service') as $row) 
 					                           	{
 					                                echo '<option value="'. $row['nom_service'] .'">'. $row['nom_service'] . '</option>';;
 					                           	}
-					                           	Database::disconnect();													
+					                           														
 											?>
 										</select>
 										<span class="help-inline" style="color: red"><?php echo $posteError;?></span>
 									</div>
 									<button type="submit" class="btn" style="margin-left: 65px;" name="validation">Ajouter l'employé</button>
-									<a href="index.php" class="btn" style="margin-left: 25px;"><span class="glyphicon glyphicon-arrow-left"></span> Retour</a>
 								</fieldset>
 							</form>						
 						</div>
@@ -202,8 +202,8 @@
 			<div class="container">
 				<div class="red-bar">
 					<div class="row">
-						<div class="col-md-3"></div>
-							<div class="footer-trombi col-md-7">
+						<div class="col-md-3 col-sm-3 col-xs-3"></div>
+							<div class="footer-trombi col-md-7 col-sm-7 col-xs-7">
 								<br />
 								<br />
 								<ul>
@@ -217,4 +217,4 @@
 			</div>			
 		</footer>
 	</body>
-</html>''
+</html>

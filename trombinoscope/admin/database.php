@@ -1,34 +1,12 @@
 <?php
 
-class Database
-{
-    private static $dbHost = "localhost";
-    private static $dbName = "trombinoscope";
-    private static $dbUsername = "root";
-    private static $dbUserpassword = "";
-    
-    private static $connection = null;
-    
-    public static function connect()
+    try//Début connexion
     {
-        if(self::$connection == null)
-        {
-            try
-            {
-              self::$connection = new PDO("mysql:host=" . self::$dbHost . ";dbname=" . self::$dbName . ";charset=utf8" , self::$dbUsername, self::$dbUserpassword);
-            }
-            catch(PDOException $e)
-            {
-                die($e->getMessage());
-            }
-        }
-        return self::$connection;
+    $db = new PDO("mysql:host=localhost;dbname=trombinoscope", "root", "");
     }
-    
-    public static function disconnect()
+    catch(Exception $e)
     {
-        self::$connection = null;
-    }
-
-}
+    die("Erreur : ".$e->getMessage());
+    }//Fin connexion
+    $db->query("SET NAMES UTF8");//Solution encodage UTF8
 ?>

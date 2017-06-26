@@ -1,6 +1,10 @@
 <?php
 	include 'database.php';
 	session_start();
+	if (isset($_SESSION['login'])) 
+	{
+	  	header("location: index.php");
+	 }
 
 	$login = $password = $error ="";
 
@@ -8,8 +12,7 @@
 	{
 		$login		=checkInput($_POST['login']);
 		$password	=checkInput($_POST['password']);
-
-		$db = Database::connect();
+		
 		$statement = $db -> prepare("SELECT * FROM utilisateur WHERE login = ? and password = ?");
 		$statement->execute(array($login,$password));
 
@@ -75,11 +78,11 @@
 				<div class="red-bar">
 					<div class="administration-trombi">
 						<div class="row">
-							<div class="col-md-3"></div>
-							<form action="login.php" role="form" class="form-vertical col-md-9" method="POST">
+							<div class="col-md-3 col-sm-2 col-xs-2"></div>
+							<form action="login.php" role="form" class="form-vertical col-md-9 col-sm-8 col-xs-8" method="POST">
 								<fieldset>
-									<legend><span style="color: #6DA542; font-style: normal; padding-left: 0.5em;"> <em>Trombinoscope - Connexion Administrateur</em></span></legend>
-									<div class="form-inline">
+									<legend style="width: 500px;"><span style="color: #6DA542;"><em>Trombinoscope - Connexion Administrateur</em></span><a href="../index.php" class="btn" ><span class="glyphicon glyphicon-arrow-left"></span> Retour</a></legend>
+									<div class="form-group">
 										<label for="identifiant">Identifiant :</label>	
 										<input class="form-nom" type="text" id="login"  placeholder="nom d'utilisateur" style="margin-left: 20px;" name="login" required="">
 									</div>
@@ -90,7 +93,6 @@
 									</div>
 									<span class="help-inline" style="color: red"><?php echo $error;?></span>
 									<button type="submit" class="btn" style="margin-left: 120px;" name="connexion" value="connexion">Se connecter</button>
-									<a href="../index.php" class="btn" ><span class="glyphicon glyphicon-arrow-left"></span> Retour</a>
 								</fieldset>						
 							</form>						
 						</div>
@@ -102,8 +104,8 @@
 			<div class="container">
 				<div class="red-bar">
 					<div class="row">
-						<div class="col-md-3"></div>
-							<div class="footer-trombi col-md-7">
+						<div class="col-md-3 col-sm-3 col-xs-3"></div>
+							<div class="footer-trombi col-md-7 col-sm-7 col-xs-7">
 								<br />
 								<br />
 								<ul>

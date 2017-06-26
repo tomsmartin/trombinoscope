@@ -71,7 +71,7 @@
             {
                 if(!move_uploaded_file($_FILES["image"]["tmp_name"], $imagePath)) 
                 {
-                    $imageError = "Il y a eu une erreur lors de l'upload";
+                    $imageError = "Il y a eu une erreur lors de l'upload, vérifier la taille de l'image (1Mo max)";
                     $isUploadSuccess = false;
                 } 
             } 
@@ -80,7 +80,7 @@
         if(($isSuccess && $isImageUpdated && $isUploadSuccess) || ($isSuccess && !$isImageUpdated)) 
         {
 
-        	$db = Database::connect();
+        	
         	if ($isImageUpdated) 
         	{
         		$statement = $db->prepare("UPDATE employe SET nom_employe=?,prenom_employe=?,agence_employe=?,service_employe=?,image_employe=? WHERE id_employe=?");
@@ -92,25 +92,24 @@
             	$statement->execute(array($nomEmploye,$prenomEmploye,$agenceEmploye,$serviceEmploye,$id));
         	}
 
-            Database::disconnect();
+            
             header("Location: index.php");
 
         }
         else if($isImageUpdated && !$isUploadSuccess)
         {
-        	$db = Database::connect();
+        	
             $statement = $db->prepare("SELECT * FROM employe where id = ?");
             $statement->execute(array($id));
             $employe = $statement->fetch();
             $image = $employe['image_employe'];
-            Database::disconnect();
+            
         }
 
     }
 
     else
     {
-    	$db = Database::connect();
     	$statement = $db ->prepare("SELECT * FROM employe WHERE id_employe=?");
     	$statement->execute(array($id));
     	$employe = $statement->fetch();
@@ -119,7 +118,6 @@
         $agenceEmploye      = $employe['agence_employe'];
         $serviceEmploye     = $employe['service_employe']; 
         $image              = $employe['image_employe'];
-    	Database::disconnect();
     }
     function checkInput($data) 
     {
@@ -147,34 +145,37 @@
 	<body>
 		<header class="container">
 			<div class="row">
-				<div class="col-md-6 col-sm-6 col-xs-6">
-					<div class="header-trombi">
-						<div class="main-menu">
-							<a href="../index.php"><img src="../images/logo_accueil.png" style="margin-left: 180px; margin-bottom:20px"></a>
-						</div>
-					</div>			
-				</div>
-				<div class="col-md-3 col-sm-3 col-xs-3">
-					
-				</div>
-				<div class="col-md-3 col-sm-3 col-xs-3">
-					<div class="main-menu-connexion">
+				<div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+					<div class="header-trombi col-md-2"></div>
+					<div class="col-md-7 col-sm-7 col-xs-7">
+						<a href="../index.php"><img src="../images/logo_accueil.png" style="margin: 60px 20px"></a>				
+					</div>
+					<div class="main-menu-connexion col-md-3 col-sm-3 col-xs-3">
 						<ul class="fa-ul">
-							<a href="session_destroy.php"><li><i class="fa fa-unlock" ></i> Déconnexion</li></a>		
+							<?php
+								if (!isset($_SESSION['login'])) 
+								{
+								  	echo '<a href="admin/login.php"><li><i class="fa fa-lock" ></i> Connexion</li></a>';
+								}
+								else if (isset($_SESSION['login'])) 
+								{
+									echo '<a href="session_destroy.php"><li><i class="fa fa-unlock" ></i> Déconnexion</li></a>';
+								}   
+							?>		
 						</ul>
-					</div>						
+					</div>								
 				</div>
 			</div>
 		</header>
 		<section id="formulaire">
 			<div class="container">
 				<div class="red-bar">
-					<div class="administration-trombi">
+					<div class="administration-trombi ">
 						<div class="row">
-							<div class="col-md-3"></div>
-							<form action="<?php echo 'update.php?id=' .$id; ?>" role="form" class="form-vertcial col-md-9" method="post" enctype="multipart/form-data">
+							<div class="col-md-3 col-sm-2 col-xs-2"></div>
+							<form action="<?php echo 'update.php?id=' .$id; ?>" role="form" class="form-vertcial col-md-8 col-sm-7 col-xs-7" method="post" enctype="multipart/form-data">
 								<fieldset>
-									<legend><span style="color: #6DA542; font-style: normal; padding-left: 0.5em;"> <em>Trombinoscope - Modifier les informations de l'employé</em></span></legend>
+									<legend style="width: 468px;"><span style="color: #6DA542;"><em>Administration - Modifier les informations</em></span><a href="index.php" class="btn""><span class="glyphicon glyphicon-arrow-left"></span> Retour</a></legend>
 									<div class="form-group" for="photo">
 										<label for="photo_employe" id="photo">Sélectionner une nouvelle image (max. 1 Mo):</label>
 										<p><?php echo $image;?></p>
@@ -184,29 +185,29 @@
 									</div>
 									<div class="form-group" for="nom">
 										<label id="nom">Nom :</label>	
-										<input class="form-nom" type="text" name="nom_employe" placeholder="nom de l'employé" style="margin-left: 20px;" value="<?php echo $nomEmploye;?>" required="">
+										<input class="form-nom" type="text" name="nom_employe" placeholder="nom de l'employé" style="margin-left: 27px;" value="<?php echo $nomEmploye;?>" required="">
 										<br>
 										<span class="help-inline" style="color: red"><?php echo $nomError;?></span>
 									</div>
 									<div class="form-group" for="prenom">
 										<label id="prenom">Prenom :</label>	
-										<input class="form-nom" type="text" name="prenom_employe" placeholder="prenom de l'employé" value="<?php echo $prenomEmploye;?>" required="">
+										<input class="form-nom" type="text" name="prenom_employe" placeholder="prenom de l'employé" value="<?php echo $prenomEmploye;?>" required="" style="margin-left: 7px;">
 										<br>
 										<span class="help-inline" style="color: red"><?php echo $prenomError;?></span>
 									</div>
 									<div class="form-group" for="agence">
 										<label id="agence">Agence :</label>	
-										<select class="selector" style="margin-left: 2px;" name="agence_employe" >
+										<select class="selector" style="margin-left: 9px;" name="agence_employe">
 											<?php
-												$db = Database::connect();
-					                           	foreach ($db->query('SELECT * FROM agence') as $row) 
+												
+					                           	foreach ($db->query('SELECT * FROM agence ORDER BY nom_agence ASC') as $row) 
 					                           	{
 					                           		if($row['nom_agence'] == $agenceEmploye)
 				                                        echo '<option selected="selected" value="'. $row['nom_agence'] .'">'. $row['nom_agence'] . '</option>';
 				                                    else
 				                                       echo '<option value="'. $row['nom_agence'] .'">'. $row['nom_agence'] . '</option>';
 					                           	}
-					                           	Database::disconnect();													
+					                           												
 											?>
 										</select>
 										<span class="help-inline" style="color: red"><?php echo $agenceError;?></span>
@@ -215,21 +216,20 @@
 										<label id="service">Service :</label>	
 										<select class="selector" style="margin-left: 4px;" name="service_employe">
 											<?php
-												$db = Database::connect();
-					                           	foreach ($db->query('SELECT * FROM service') as $row) 
+												
+					                           	foreach ($db->query('SELECT * FROM service ORDER BY nom_service ASC') as $row) 
 					                           	{
 					                           		if($row['nom_service'] == $serviceEmploye)
 				                                        echo '<option selected="selected" value="'. $row['nom_service'] .'">'. $row['nom_service'] . '</option>';
 				                                    else
 					                                echo '<option value="'. $row['nom_service'] .'">'. $row['nom_service'] . '</option>';;
 					                           	}
-					                           	Database::disconnect();													
+					                           													
 											?>
 										</select>
 										<span class="help-inline" style="color: red"><?php echo $posteError;?></span>
 									</div>
-									<button type="submit" class="btn" style="margin-left: 65px;" name="validation">Modifier</button>
-									<a href="index.php" class="btn" ><span class="glyphicon glyphicon-arrow-left"></span> Retour</a>
+									<button type="submit" class="btn" style="margin-left: 120px;" name="validation">Modifier</button>
 								</fieldset>
 							</form>						
 						</div>
@@ -241,8 +241,8 @@
 			<div class="container">
 				<div class="red-bar">
 					<div class="row">
-						<div class="col-md-3"></div>
-							<div class="footer-trombi col-md-7">
+						<div class="col-md-3 col-sm-3 col-xs-3"></div>
+							<div class="footer-trombi col-md-7 col-sm-7 col-xs-7">
 								<br />
 								<br />
 								<ul>
