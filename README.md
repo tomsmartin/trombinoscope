@@ -5,4 +5,4 @@ Projet fonctionel, actuellement designé seulement pour les ordinateurs. Les app
 Projet développer en HTML/CSS et PHP avec le framework Bootstrap.
 La base de données n'est pas fournis.
 
-Créer par Martin Thomas.
+Créé par Martin Thomas.
